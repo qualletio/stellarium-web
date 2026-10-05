@@ -31,7 +31,7 @@ export default function SipsPage() {
       </section>
 
       <section className={styles.guidelines}>
-        <aside><span>GUIDE</span><b>01 — 03</b><i /></aside>
+        <aside><span>BASICS</span><b>01 — 04</b><i /></aside>
         <div className={styles.items}>
           <article><span>01</span><div><h2>What is a Stellarium Improvement Proposal?</h2><p>A Stellarium Improvement Proposal, or SIPs for short, is a technical document that seeks to improve some aspects of the Stellarium and RequestScript platforms.</p></div></article>
           <article><span>02</span><div><h2>Notation</h2><p>SIPs should be named starting with “SIP” and the number of the proposal following logically from the last number.</p></div></article>
