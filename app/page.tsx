@@ -27,7 +27,7 @@ export default function Home() {
       <nav className={styles.nav} aria-label="Main navigation">
         <a className={styles.brand} href="#top" aria-label="Stellarium home"><StarMark /><span>stellarium</span></a>
         <div className={styles.navLinks}>
-          <a href="#network">Network</a><a href="#build">Developers</a>
+          <a href="#network">Network</a><a href="#build">Developers</a><a href="/sips">SIPs</a>
           <a href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
         </div>
         <a className={styles.navCta} href="#build">Run a node <span>→</span></a>
@@ -68,7 +68,7 @@ export default function Home() {
       <section className={styles.build} id="build"><div className={styles.buildArt} aria-hidden="true"><div className={styles.bigStar}>✦</div><div className={styles.bigRing} /><div className={styles.sparkOne}>+</div><div className={styles.sparkTwo}>✦</div></div><div className={styles.buildContent}><div className={styles.sectionKicker}>03 — Ship your first resource</div><h2>From zero to<br />networked <em>fast.</em></h2><p>Install the TypeScript node, register a RequestScript resource, and start a server. Bootstrap from a peer whenever you&apos;re ready to join a wider constellation.</p><a className={styles.primaryButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Read the docs <Arrow /></a></div><div className={styles.command}><span>$</span> npm install stellarium-ts fastify requestscript <button aria-label="Copy install command">⧉</button></div></section>
 
       <section className={styles.close}><StarMark /><p>There is more out there.</p><h2>Build for it.</h2><a className={styles.lightButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Get started <span>→</span></a></section>
-      <footer className={styles.footer}><a className={styles.brand} href="#top"><StarMark /><span>stellarium</span></a><p>Decentralized API infrastructure for an open internet.</p><div><a href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">GitHub</a><span>© 2026</span></div></footer>
+      <footer className={styles.footer}><a className={styles.brand} href="#top"><StarMark /><span>stellarium</span></a><p>Decentralized API infrastructure for an open internet.</p><div><a href="/sips">SIPs</a><a href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">GitHub</a><span>© 2026</span></div></footer>
     </main>
   );
 }
