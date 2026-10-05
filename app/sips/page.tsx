@@ -21,7 +21,7 @@ export default function SipsPage() {
     <main className={styles.page}>
       <nav className={styles.nav} aria-label="Main navigation">
         <a className={styles.brand} href="/"><StarMark /><span>stellarium</span></a>
-        <div className={styles.navLinks}><a href="/#network">Network</a><a href="/#build">Developers</a><a className={styles.active} href="/sips">SIPs</a></div>
+        <div className={styles.navLinks}><a href="/#network">Network</a><a href="/#build">Developers</a><a className={styles.active} href="/sips">SIPs</a><a href="/governance">Governance</a></div>
         <a className={styles.navCta} href={sipDocument} target="_blank" rel="noreferrer">View canonical doc <span>↗</span></a>
       </nav>
 
@@ -41,7 +41,7 @@ export default function SipsPage() {
       </section>
 
       <section className={styles.callout}><StarMark /><p>Good ideas travel further when they are clear.</p><a href={sipDocument} target="_blank" rel="noreferrer">Read the SIP guide <span>→</span></a></section>
-      <footer className={styles.footer}><a className={styles.brand} href="/"><StarMark /><span>stellarium</span></a><p>Decentralized API infrastructure for an open internet.</p><div><a href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">GitHub</a><span>© 2026</span></div></footer>
+      <footer className={styles.footer}><a className={styles.brand} href="/"><StarMark /><span>stellarium</span></a><p>Decentralized API infrastructure for an open internet.</p><div><a href="/governance">Governance</a><a href="https://discord.gg/yDEBkaz6cB" target="_blank" rel="noreferrer">Discord</a><a href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">GitHub</a><span>© 2026</span></div></footer>
     </main>
   );
 }
