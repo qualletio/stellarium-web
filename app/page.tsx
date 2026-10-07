@@ -52,7 +52,7 @@ export default function Home() {
 
       <section className={styles.intro} id="network">
         <div className={styles.sectionKicker}>01 — A new API primitive</div>
-        <div className={styles.introGrid}><h2>Make APIs<br />as open as the web.</h2><div className={styles.introBody}><p>Stellarium turns every API capability into a resource the network can find, call, and compose. Host a resource on your own node. Let other nodes discover it. Keep the implementation where it belongs.</p><a className={styles.inlineLink} href="#how-it-works">See how it works <span>↓</span></a></div></div>
+        <div className={styles.introGrid}><h2>Make APIs<br />as open as the web.</h2><div className={styles.introBody}><p>Stellarium turns every API capability into a resource the network can find, call, and compose. Host a resource on your own node. Let other nodes discover it. Monetize your Resources. Run your own infrastructure.</p><a className={styles.inlineLink} href="#how-it-works">See how it works <span>↓</span></a></div></div>
         <div className={styles.principles}>
           <article><span className={styles.number}>01</span><h3>Run sovereign</h3><p>Your node, your infrastructure, your resources. Stellarium embeds directly in your Fastify application.</p></article>
           <article><span className={styles.number}>02</span><h3>Compose freely</h3><p>RequestScript makes remote and local resources feel like one elegant programming surface.</p></article>
@@ -61,7 +61,7 @@ export default function Home() {
       </section>
 
       <section className={styles.flow} id="how-it-works">
-        <div className={styles.flowCopy}><div className={styles.sectionKicker}>02 — One program, many places</div><h2>Write intent.<br /><em>The network routes it.</em></h2><p>Bind a resource by its qualified name. Execute local functions in-process, or send the same RequestScript program across the network to the node that hosts it.</p></div>
+        <div className={styles.flowCopy}><div className={styles.sectionKicker}>02 — One program, many places</div><h2>Write intent.<br /><em>The network routes it.</em></h2><p>Call a resource. Get a response across the network without worrying about where it is hosted, http status codes, auth, or retries.</p></div>
         <div className={styles.flowVisual}><div className={styles.scriptWindow}><div className={styles.windowTop}><span /><span /><span /><b>GetTemperature.req</b></div><pre><code><i>request</i> GetTemperature {'{'}{"\n"}  <i>const</i> weather: <strong>com.example.Weather</strong>{"\n\n"}  <i>return</i> weather.temperature({"\n"}    city: <span>&quot;Oslo&quot;</span>{"\n"}  ){"\n"}{'}'}</code></pre><div className={styles.result}><span>returnValue</span><b>12</b><small>• executed</small></div></div><div className={styles.routeLine}><span>routing request</span><i /></div><div className={styles.miniNodes}><div><NodeIcon /><small>your node</small></div><div><NodeIcon /><small>weather</small></div><div><NodeIcon /><small>payments</small></div></div></div>
       </section>
 
