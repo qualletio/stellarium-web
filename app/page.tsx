@@ -37,7 +37,7 @@ export default function Home() {
         <div className={styles.heroCopy}>
           <div className={styles.eyebrow}><span className={styles.pulse} /> The programmable API network</div>
           <h1>APIs, <em>unbound.</em></h1>
-          <p className={styles.heroText}>A decentralized platform for composing APIs into powerful programs—built with RequestScript, owned by the network.</p>
+          <p className={styles.heroText}>Stellarium is a global platform for composing APIs into powerful programs.</p>
           <div className={styles.actions}><a className={styles.primaryButton} href="#build">Start building <span>→</span></a><a className={styles.textButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Explore the code <Arrow /></a></div>
         </div>
         <div className={styles.heroArt} aria-label="A decentralized network illustration" role="img">
