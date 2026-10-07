@@ -52,7 +52,7 @@ export default function Home() {
 
       <section className={styles.intro} id="network">
         <div className={styles.sectionKicker}>01 — A new API primitive</div>
-        <div className={styles.introGrid}><h2>Make APIs<br />as open as the web.</h2><div className={styles.introBody}><p>Stellarium turns every API capability into a resource the network can find, call, and compose. Host a resource on your own node. Let other nodes discover it. Monetize your Resources. Run your own infrastructure.</p><a className={styles.inlineLink} href="#how-it-works">See how it works <span>↓</span></a></div></div>
+        <div className={styles.introGrid}><h2>Make APIs<br />as open as the web.</h2><div className={styles.introBody}><p>Stellarium turns every API capability into a resource the network can find, call, and compose. Host a resource on your own node. Let other nodes discover it and pay for its use. </p><a className={styles.inlineLink} href="#how-it-works">See how it works <span>↓</span></a></div></div>
         <div className={styles.principles}>
           <article><span className={styles.number}>01</span><h3>Run sovereign</h3><p>Your node, your infrastructure, your resources. Stellarium embeds directly in your Fastify application.</p></article>
           <article><span className={styles.number}>02</span><h3>Compose freely</h3><p>RequestScript makes remote and local resources feel like one elegant programming surface.</p></article>
