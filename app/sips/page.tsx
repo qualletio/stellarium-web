@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import styles from "./page.module.css";
 
-const sipDocument = "https://docs.google.com/document/d/1MSVPcHKmmP9lRa1CXqlPdnbkIMZDpEetcxoOmNtkeXA/edit?usp=sharing";
+const sipDocument = "https://github.com/qualletio/SIPs#readme";
 
 export const metadata: Metadata = {
   title: "SIPs — Stellarium Improvement Proposals",
@@ -22,12 +22,12 @@ export default function SipsPage() {
       <nav className={styles.nav} aria-label="Main navigation">
         <a className={styles.brand} href="/"><StarMark /><span>stellarium</span></a>
         <div className={styles.navLinks}><a href="/#network">Network</a><a href="/#build">Developers</a><a className={styles.active} href="/sips">SIPs</a><a href="/governance">Governance</a></div>
-        <a className={styles.navCta} href={sipDocument} target="_blank" rel="noreferrer">View canonical doc <span>↗</span></a>
+        <a className={styles.navCta} href={sipDocument} target="_blank" rel="noreferrer">View SIPs<span>↗</span></a>
       </nav>
 
       <section className={styles.hero}>
         <div className={styles.heroArt} aria-hidden="true"><div className={styles.ringOne} /><div className={styles.ringTwo} /><div className={styles.spark}>✦</div><div className={styles.sipBadge}>SIP<br /><b>001</b></div></div>
-        <div><p className={styles.kicker}>Community governance / living guide</p><h1>Stellarium<br /><em>Improvement</em><br />Proposals</h1><p className={styles.summary}>A clear path for proposing thoughtful improvements to the Stellarium network.</p><a className={styles.documentLink} href={sipDocument} target="_blank" rel="noreferrer">Open the enshrined document <span>↗</span></a></div>
+        <div><p className={styles.kicker}>Community governance / living guide</p><h1>Stellarium<br /><em>Improvement</em><br />Proposals</h1><p className={styles.summary}>A clear path for proposing thoughtful improvements to the Stellarium network.</p><a className={styles.documentLink} href={sipDocument} target="_blank" rel="noreferrer">Go to the SIPs repository <span>↗</span></a></div>
       </section>
 
       <section className={styles.guidelines}>
