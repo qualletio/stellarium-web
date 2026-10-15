@@ -1,14 +1,10 @@
+import Link from "next/link";
+import SiteFooter from "./components/SiteFooter";
+import SiteNav from "./components/SiteNav";
+import StarMark from "./components/StarMark";
 import styles from "./page.module.css";
 
 const Arrow = () => <span className={styles.arrow} aria-hidden="true">↗</span>;
-
-const StarMark = () => (
-  <svg className={styles.starMark} viewBox="0 0 48 48" fill="none" aria-hidden="true">
-    <path d="M24 2v44M2 24h44" stroke="currentColor" strokeWidth="1.5" />
-    <path d="m7 7 34 34M41 7 7 41" stroke="currentColor" strokeWidth="1" opacity=".45" />
-    <circle cx="24" cy="24" r="5.5" fill="currentColor" />
-  </svg>
-);
 
 const NodeIcon = () => (
   <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
@@ -24,25 +20,18 @@ const NodeIcon = () => (
 export default function Home() {
   return (
     <main className={styles.page}>
-      <nav className={styles.nav} aria-label="Main navigation">
-        <a className={styles.brand} href="#top" aria-label="Stellarium home"><StarMark /><span>stellarium</span></a>
-        <div className={styles.navLinks}>
-          <a href="#network">Network</a><a href="#build">Developers</a><a href="/sips">SIPs</a><a href="/governance">Governance</a>
-          <a href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">GitHub <Arrow /></a>
-        </div>
-        <a className={styles.navCta} href="#build">Run a node <span>→</span></a>
-      </nav>
+      <SiteNav />
 
       <section className={styles.hero} id="top">
         <div className={styles.heroCopy}>
           <div className={styles.eyebrow}><span className={styles.pulse} /> The programmable API network</div>
           <h1>APIs, <em>unbound.</em></h1>
           <p className={styles.heroText}>Stellarium is a global platform for composing APIs into powerful programs.</p>
-          <div className={styles.actions}><a className={styles.primaryButton} href="#build">Start building <span>→</span></a><a className={styles.textButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Explore the code <Arrow /></a></div>
+          <div className={styles.actions}><Link className={styles.primaryButton} href="/build">Start building <span>→</span></Link><a className={styles.textButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Explore the code <Arrow /></a></div>
         </div>
         <div className={styles.heroArt} aria-label="A decentralized network illustration" role="img">
           <div className={`${styles.orbit} ${styles.orbitOne}`} /><div className={`${styles.orbit} ${styles.orbitTwo}`} /><div className={`${styles.orbit} ${styles.orbitThree}`} />
-          <div className={styles.nodeCore}><StarMark /></div>
+          <div className={styles.nodeCore}><StarMark className={styles.starMark} /></div>
           <div className={`${styles.satellite} ${styles.satelliteOne}`}><NodeIcon /></div><div className={`${styles.satellite} ${styles.satelliteTwo}`}><NodeIcon /></div><div className={`${styles.satellite} ${styles.satelliteThree}`}><NodeIcon /></div><div className={`${styles.satellite} ${styles.satelliteFour}`}><NodeIcon /></div>
           <div className={styles.artLabel}><span>live topology</span><b>04 peers connected</b></div><div className={styles.orbitalTag}>RequestScript<small>program layer</small></div>
         </div>
@@ -65,10 +54,10 @@ export default function Home() {
         <div className={styles.flowVisual}><div className={styles.scriptWindow}><div className={styles.windowTop}><span /><span /><span /><b>GetTemperature.req</b></div><pre><code><i>request</i> GetTemperature {'{'}{"\n"}  <i>const</i> weather: <strong>com.example.Weather</strong>{"\n\n"}  <i>return</i> weather.temperature({"\n"}    city: <span>&quot;Oslo&quot;</span>{"\n"}  ){"\n"}{'}'}</code></pre><div className={styles.result}><span>returnValue</span><b>12</b><small>• executed</small></div></div><div className={styles.routeLine}><span>routing request</span><i /></div><div className={styles.miniNodes}><div><NodeIcon /><small>your node</small></div><div><NodeIcon /><small>weather</small></div><div><NodeIcon /><small>payments</small></div></div></div>
       </section>
 
-      <section className={styles.build} id="build"><div className={styles.buildArt} aria-hidden="true"><div className={styles.bigStar}>✦</div><div className={styles.bigRing} /><div className={styles.sparkOne}>+</div><div className={styles.sparkTwo}>✦</div></div><div className={styles.buildContent}><div className={styles.sectionKicker}>03 — Ship your first resource</div><h2>From zero to<br />networked <em>fast.</em></h2><p>Install the TypeScript node, register a RequestScript resource, and start a server. Bootstrap from a peer whenever you&apos;re ready to join a wider constellation.</p><a className={styles.primaryButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Read the docs <Arrow /></a></div><div className={styles.command}><span>$</span> npm install stellarium-ts fastify requestscript <button aria-label="Copy install command">⧉</button></div></section>
+      <section className={styles.build} id="build"><div className={styles.buildArt} aria-hidden="true"><div className={styles.bigStar}>✦</div><div className={styles.bigRing} /><div className={styles.sparkOne}>+</div><div className={styles.sparkTwo}>✦</div></div><div className={styles.buildContent}><div className={styles.sectionKicker}>03 — Ship your first resource</div><h2>From zero to<br />networked <em>fast.</em></h2><p>Install the TypeScript node, register a RequestScript resource, and start a server. Bootstrap from a peer whenever you&apos;re ready to join a wider constellation.</p><Link className={styles.primaryButton} href="/build">Read the guide <span>→</span></Link></div><div className={styles.command}><span>$</span> npm install stellarium-ts fastify requestscript <button aria-label="Copy install command">⧉</button></div></section>
 
-      <section className={styles.close}><StarMark /><p>There is more out there.</p><h2>Build for it.</h2><a className={styles.lightButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Get started <span>→</span></a></section>
-      <footer className={styles.footer}><a className={styles.brand} href="#top"><StarMark /><span>stellarium</span></a><p>Decentralized API infrastructure for an open internet.</p><div><a href="/sips">SIPs</a><a href="/governance">Governance</a><a href="https://discord.gg/yDEBkaz6cB" target="_blank" rel="noreferrer">Discord</a><a href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">GitHub</a><span>© 2026</span></div></footer>
+      <section className={styles.close}><StarMark className={styles.starMark} /><p>There is more out there.</p><h2>Build for it.</h2><a className={styles.lightButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Get started <span>→</span></a></section>
+      <SiteFooter />
     </main>
   );
 }

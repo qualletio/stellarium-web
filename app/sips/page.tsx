@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import SiteFooter from "../components/SiteFooter";
+import SiteNav from "../components/SiteNav";
+import StarMark from "../components/StarMark";
 import styles from "./page.module.css";
 
 const sipDocument = "https://github.com/qualletio/SIPs#readme";
@@ -8,22 +11,10 @@ export const metadata: Metadata = {
   description: "Guidelines for Stellarium Improvement Proposals.",
 };
 
-const StarMark = () => (
-  <svg className={styles.starMark} viewBox="0 0 48 48" fill="none" aria-hidden="true">
-    <path d="M24 2v44M2 24h44" stroke="currentColor" strokeWidth="1.5" />
-    <path d="m7 7 34 34M41 7 7 41" stroke="currentColor" strokeWidth="1" opacity=".45" />
-    <circle cx="24" cy="24" r="5.5" fill="currentColor" />
-  </svg>
-);
-
 export default function SipsPage() {
   return (
     <main className={styles.page}>
-      <nav className={styles.nav} aria-label="Main navigation">
-        <a className={styles.brand} href="/"><StarMark /><span>stellarium</span></a>
-        <div className={styles.navLinks}><a href="/#network">Network</a><a href="/#build">Developers</a><a className={styles.active} href="/sips">SIPs</a><a href="/governance">Governance</a></div>
-        <a className={styles.navCta} href={sipDocument} target="_blank" rel="noreferrer">View SIPs<span>↗</span></a>
-      </nav>
+      <SiteNav />
 
       <section className={styles.hero}>
         <div className={styles.heroArt} aria-hidden="true"><div className={styles.ringOne} /><div className={styles.ringTwo} /><div className={styles.spark}>✦</div><div className={styles.sipBadge}>SIP<br /><b>001</b></div></div>
@@ -40,8 +31,8 @@ export default function SipsPage() {
         </div>
       </section>
 
-      <section className={styles.callout}><StarMark /><p>Good ideas travel further when they are clear.</p><a href={sipDocument} target="_blank" rel="noreferrer">Read the SIP guide <span>→</span></a></section>
-      <footer className={styles.footer}><a className={styles.brand} href="/"><StarMark /><span>stellarium</span></a><p>Decentralized API infrastructure for an open internet.</p><div><a href="/governance">Governance</a><a href="https://discord.gg/yDEBkaz6cB" target="_blank" rel="noreferrer">Discord</a><a href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">GitHub</a><span>© 2026</span></div></footer>
+      <section className={styles.callout}><StarMark className={styles.starMark} /><p>Good ideas travel further when they are clear.</p><a href={sipDocument} target="_blank" rel="noreferrer">Read the SIP guide <span>→</span></a></section>
+      <SiteFooter />
     </main>
   );
 }
