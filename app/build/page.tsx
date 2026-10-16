@@ -62,7 +62,8 @@ await node.start(fastify, {
 
 const envFile = `BASE_URL=http://127.0.0.1:3000
 SIGNING_PRIVATE_KEY=<your base64url private key>
-SIGNING_PUBLIC_KEY=<your base64url public key>`;
+SIGNING_PUBLIC_KEY=<your base64url public key>
+API_KEY=<a secret your clients send to this node>`;
 
 const keygen = `node --input-type=module -e '
 import { generateKeyPairSync } from "node:crypto";
@@ -79,8 +80,9 @@ console.log(JSON.stringify({
 '`;
 
 const curl = `curl -X POST http://127.0.0.1:3000/v1/run \\
-  -H 'Content-Type: text/plain' \\
-  -d '"request GetTemperature {\\n  const weather: com.example.Weather\\n\\n  return weather.temperature(city: \\"Oslo\\")\\n}"'`;
+  -H 'Content-Type: application/json' \\
+  -H "Authorization: Bearer $API_KEY" \\
+  -d '{"source": "request GetTemperature {\\n  const weather: com.example.Weather\\n  const reading = weather.temperature(city: \\"Oslo\\")\\n  return reading.value\\n}"}'`;
 
 const curlResponse = `{ "returnValue": 12 }`;
 
@@ -141,9 +143,11 @@ export default function BuildPage() {
             <table className={styles.table}>
               <thead><tr><th>Variable</th><th>What it does</th></tr></thead>
               <tbody>
-                <tr><td><code>BASE_URL</code></td><td>The public address of this node. Peers send requests to <code>{"{BASE_URL}"}/run</code>, so set it to something like <code>http://127.0.0.1:3000</code>. Don&apos;t include <code>/v1</code>.</td></tr>
+                <tr><td><code>BASE_URL</code></td><td>The public address of this node. Peers send resource calls to <code>{"{BASE_URL}"}/v1/run/resource</code>, so set it to something like <code>http://127.0.0.1:3000</code>. Don&apos;t include <code>/v1</code>.</td></tr>
                 <tr><td><code>SIGNING_PRIVATE_KEY</code></td><td>Your ED25519 private key, base64url encoded. The node uses it to sign what it publishes to peers.</td></tr>
                 <tr><td><code>SIGNING_PUBLIC_KEY</code></td><td>The matching ED25519 public key, base64url encoded. Peers use it to check your signatures. It must pair with the private key.</td></tr>
+                <tr><td><code>API_KEY</code></td><td>A secret your clients must send as <code>Authorization: Bearer &lt;API_KEY&gt;</code> to run requests on this node.</td></tr>
+                <tr><td><code>OPERATOR_URL</code></td><td>Only needed if you host priced resources. The operator address your node sends payment vouchers to.</td></tr>
               </tbody>
             </table>
           </div>
@@ -181,17 +185,17 @@ export default function BuildPage() {
                 <tr><td><code>GET /v1/</code></td><td>none</td><td>Health check. Responds with <code>{`{ "hello": "world" }`}</code>.</td></tr>
                 <tr><td><code>GET /v1/peers</code></td><td>none</td><td>Lists the peers this node knows about.</td></tr>
                 <tr><td><code>GET /v1/resources</code></td><td>none</td><td>Lists resources hosted here and resources learned from peers. Function code always stays on the node that hosts it.</td></tr>
-                <tr><td><code>POST /v1/run</code></td><td>script text</td><td>Runs one RequestScript <code>request</code>.</td></tr>
+                <tr><td><code>POST /v1/run</code></td><td><code>{`{ "source": "..." }`}</code></td><td>Runs one RequestScript <code>request</code>. Requires your <code>API_KEY</code>.</td></tr>
               </tbody>
             </table>
           </div>
 
           <h3>Run your first request</h3>
-          <p>Send the script as plain text to <code>/v1/run</code>. The script must be a <code>request</code>.</p>
+          <p>Send the script as the <code>source</code> field of a JSON body to <code>/v1/run</code>, with your <code>API_KEY</code> as a bearer token. The script must be a <code>request</code>.</p>
           <CodeBlock label="Terminal" code={curl} />
           <p>If it works, you get back a <code>200</code> with the result:</p>
           <CodeBlock label="Response" code={curlResponse} />
-          <p>If the script isn&apos;t a request, you get a <code>400</code> with <code>{`{ "error": "Invalid script" }`}</code>. Anything else that goes wrong returns a <code>500</code>.</p>
+          <p>A missing or wrong API key returns a <code>401</code>. If the script isn&apos;t a request, you get a <code>400</code> with <code>{`{ "error": "Invalid script" }`}</code>. Anything else that goes wrong returns a <code>500</code>. A resource call that fails does not fail the request: it comes back as an <code>error</code> value your script can check.</p>
           <p>To learn more about writing scripts, read the <a href={links.requestscript} target="_blank" rel="noreferrer">RequestScript docs</a>. For the full reference, see the <a href={readme} target="_blank" rel="noreferrer">stellarium-ts README</a>.</p>
         </div>
       </section>
