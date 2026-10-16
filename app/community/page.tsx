@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
 import StarMark from "../components/StarMark";
 import { links } from "../components/nav-data";
+import { pageMetadata } from "../lib/site";
 import styles from "../components/content.module.css";
 
-export const metadata: Metadata = {
-  title: "Community | Stellarium",
-  description: "Find the Stellarium community on Discord and GitHub.",
-};
+export const metadata = pageMetadata({
+  title: "Community",
+  description: "Join the Stellarium community on Discord and GitHub. Get help running a node, share what you're building, and follow the open source repositories.",
+  path: "/community",
+});
 
 const repos = [
   { name: "stellarium-ts", text: "The TypeScript node. Start here if you want to run a node or work on the network itself.", href: links.github },
@@ -25,8 +26,8 @@ export default function CommunityPage() {
 
       <section className={styles.hero}>
         <div>
-          <p className={styles.kicker}>Participate / Community</p>
-          <h1>Find your<br /><em>people.</em></h1>
+          <p className={styles.kicker}>Participate / Find your people</p>
+          <h1>The Stellarium<br /><em>community.</em></h1>
           <p className={styles.lead}>Stellarium is built in the open by people who want APIs to be as open as the web. The best way to get started is to join the Discord, say hello, and ask questions.</p>
           <div className={styles.actions}>
             <a className={styles.button} href={links.discord} target="_blank" rel="noreferrer">Join our Discord <span>↗</span></a>

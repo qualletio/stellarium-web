@@ -1,15 +1,27 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import CodeBlock from "../components/CodeBlock";
+import JsonLd from "../components/JsonLd";
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
 import StarMark from "../components/StarMark";
 import { links } from "../components/nav-data";
+import { pageMetadata, siteUrl } from "../lib/site";
 import styles from "../components/content.module.css";
 
-export const metadata: Metadata = {
-  title: "Run a node | Stellarium",
-  description: "A step by step guide to running your own Stellarium node with stellarium-ts.",
+export const metadata = pageMetadata({
+  title: "Run a node",
+  description: "Step by step guide to running a Stellarium node with stellarium-ts and Fastify: install, register API resources, join a network, and use the HTTP API.",
+  path: "/build",
+  ownImage: true,
+});
+
+const article = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  headline: "Run a Stellarium node",
+  description: "Step by step guide to running a Stellarium node with stellarium-ts and Fastify.",
+  url: `${siteUrl}/build`,
+  publisher: { "@id": `${siteUrl}/#organization` },
 };
 
 const readme = `${links.github}#running-a-node`;
@@ -76,11 +88,12 @@ export default function BuildPage() {
   return (
     <main className={styles.page}>
       <SiteNav />
+      <JsonLd data={article} />
 
       <section className={styles.hero}>
         <div>
           <p className={styles.kicker}>Build / Node guide</p>
-          <h1>Run your<br />own <em>node.</em></h1>
+          <h1>Run a Stellarium<br /><em>node.</em></h1>
           <p className={styles.lead}>A node is your piece of the Stellarium network. It hosts your APIs, learns about everyone else&apos;s, and forwards requests to the right place. This guide takes you from an empty folder to a running node in a few steps.</p>
           <div className={styles.actions}>
             <a className={styles.button} href="#prerequisites">Start the guide <span>↓</span></a>

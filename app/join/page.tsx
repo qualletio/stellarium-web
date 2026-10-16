@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
 import StarMark from "../components/StarMark";
 import { links } from "../components/nav-data";
+import { pageMetadata } from "../lib/site";
 import styles from "../components/content.module.css";
 
-export const metadata: Metadata = {
-  title: "How to Join | Stellarium",
+export const metadata = pageMetadata({
+  title: "How to Join",
   description: "All the ways you can get involved with Stellarium: research, language design, web development, and decentralized architecture.",
-};
+  path: "/join",
+});
 
 type Area = {
   title: string;
@@ -77,8 +78,8 @@ export default function JoinPage() {
 
       <section className={styles.hero}>
         <div>
-          <p className={styles.kicker}>Participate / How to join</p>
-          <h1>There&apos;s room<br />for <em>you here.</em></h1>
+          <p className={styles.kicker}>Participate / There&apos;s room for you here</p>
+          <h1>Contribute to<br /><em>Stellarium.</em></h1>
           <p className={styles.lead}>You don&apos;t need permission to help. Pick an area below, take a look around, and jump into the Discord to tell us what you&apos;d like to work on.</p>
           <div className={styles.actions}>
             <a className={styles.button} href={links.discord} target="_blank" rel="noreferrer">Say hi on Discord <span>↗</span></a>

@@ -1,15 +1,28 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import CodeBlock from "../components/CodeBlock";
+import JsonLd from "../components/JsonLd";
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
 import StarMark from "../components/StarMark";
 import { links } from "../components/nav-data";
+import { pageMetadata, siteUrl } from "../lib/site";
 import styles from "../components/content.module.css";
 
-export const metadata: Metadata = {
-  title: "What is Stellarium? | Stellarium",
-  description: "Stellarium is a decentralized, programmable API network where anyone can host an API and get paid for it.",
+export const metadata = pageMetadata({
+  title: "What is Stellarium? The decentralized API network",
+  absoluteTitle: true,
+  description: "Stellarium is a decentralized, programmable API network where anyone can host an API, get paid for it, and call it with RequestScript.",
+  path: "/learn",
+  ownImage: true,
+});
+
+const article = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  headline: "What is Stellarium?",
+  description: "An introduction to Stellarium, a decentralized, programmable API network built on RequestScript.",
+  url: `${siteUrl}/learn`,
+  publisher: { "@id": `${siteUrl}/#organization` },
 };
 
 const sample = `request GetTemperature {
@@ -24,6 +37,7 @@ export default function LearnPage() {
   return (
     <main className={styles.page}>
       <SiteNav />
+      <JsonLd data={article} />
 
       <section className={styles.hero}>
         <div>

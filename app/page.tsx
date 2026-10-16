@@ -2,7 +2,15 @@ import Link from "next/link";
 import SiteFooter from "./components/SiteFooter";
 import SiteNav from "./components/SiteNav";
 import StarMark from "./components/StarMark";
+import { pageMetadata, siteDescription, siteName, siteTagline } from "./lib/site";
 import styles from "./page.module.css";
+
+export const metadata = pageMetadata({
+  title: `${siteName} | ${siteTagline}`,
+  absoluteTitle: true,
+  description: siteDescription,
+  path: "/",
+});
 
 const Arrow = () => <span className={styles.arrow} aria-hidden="true">↗</span>;
 
@@ -24,8 +32,8 @@ export default function Home() {
 
       <section className={styles.hero} id="top">
         <div className={styles.heroCopy}>
-          <div className={styles.eyebrow}><span className={styles.pulse} /> The programmable API network</div>
-          <h1>The next <em>revolution</em> in web API development</h1>
+          <div className={styles.eyebrow}><span className={styles.pulse} /> The next revolution in web API development</div>
+          <h1>The decentralized, <em>programmable</em> API network</h1>
           <p className={styles.heroText}>Stellarium is a global platform for composing APIs into powerful programs.</p>
           <div className={styles.actions}><Link className={styles.primaryButton} href="/build">Start building <span>→</span></Link><a className={styles.textButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Explore the code <Arrow /></a></div>
         </div>
@@ -37,7 +45,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.ticker} aria-label="Platform characteristics"><span>REQUESTSCRIPT NATIVE</span><i>✦</i><span>PEER-TO-PEER</span><i>✦</i><span>RESOURCE DISCOVERY</span><i>✦</i><span>LOCAL-FIRST</span><i>✦</i><span>REQUESTSCRIPT NATIVE</span></section>
+      <section className={styles.ticker} aria-hidden="true"><span>REQUESTSCRIPT NATIVE</span><i>✦</i><span>PEER-TO-PEER</span><i>✦</i><span>RESOURCE DISCOVERY</span><i>✦</i><span>LOCAL-FIRST</span><i>✦</i><span>REQUESTSCRIPT NATIVE</span></section>
 
       <section className={styles.intro} id="network">
         <div className={styles.sectionKicker}>01 — A new API primitive</div>

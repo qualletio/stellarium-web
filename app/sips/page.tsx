@@ -1,15 +1,17 @@
-import type { Metadata } from "next";
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
 import StarMark from "../components/StarMark";
+import { pageMetadata } from "../lib/site";
 import styles from "./page.module.css";
 
 const sipDocument = "https://github.com/qualletio/SIPs#readme";
 
-export const metadata: Metadata = {
-  title: "SIPs — Stellarium Improvement Proposals",
-  description: "Guidelines for Stellarium Improvement Proposals.",
-};
+export const metadata = pageMetadata({
+  title: "Stellarium Improvement Proposals (SIPs)",
+  absoluteTitle: true,
+  description: "How to write, number, and discuss Stellarium Improvement Proposals (SIPs), the process for proposing changes to Stellarium and RequestScript.",
+  path: "/sips",
+});
 
 export default function SipsPage() {
   return (
