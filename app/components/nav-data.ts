@@ -5,6 +5,7 @@ export const links = {
   sipsRepo: "https://github.com/qualletio/SIPs",
   requestscript: "https://github.com/qualletio/requestscript-js",
   website: "https://github.com/qualletio/stellarium-web",
+  docs: "https://docs.stellarium.sh",
   roadmap: "https://github.com/orgs/qualletio/projects/7/views/1",
 };
 
@@ -31,7 +32,7 @@ export const navSections: NavSection[] = [
       { title: "What is Stellarium?", description: "The basics of the programmable API network", href: "/learn" },
       { title: "How it works", description: "See a request travel across the network", href: "/#how-it-works" },
       { title: "Whitepaper", description: "The full design, written down", href: links.whitepaper, external: true },
-      { title: "Documentation", description: "Guides and references for builders", href: "#", soon: true },
+      { title: "Documentation", description: "Guides and references for builders", href: links.docs, external: true },
     ],
   },
   {

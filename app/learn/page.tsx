@@ -78,9 +78,9 @@ export default function LearnPage() {
           </article>
           <article className={styles.card}>
             <span>Documentation</span>
-            <h3>Guides and references <span className={styles.soon}>Soon</span></h3>
-            <p>Full docs for node operators and RequestScript authors are on the way. Until then, the Build page and the repositories are the best place to start.</p>
-            <div className={styles.cardLinks}><Link href="/build">Go to Build</Link></div>
+            <h3>Guides and references</h3>
+            <p>Quickstart, core concepts, configuration, and the full HTTP API for node operators and builders.</p>
+            <div className={styles.cardLinks}><a href={links.docs} target="_blank" rel="noreferrer">Read the docs ↗</a></div>
           </article>
           <article className={styles.card}>
             <span>See it in action</span>

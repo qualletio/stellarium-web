@@ -44,13 +44,16 @@ const areas: Area[] = [
   },
   {
     title: "Website, blog, and docs",
-    intro: "This site is how most people meet Stellarium. The blog and the documentation haven't launched yet, so you can help shape them from the start.",
+    intro: "This site is how most people meet Stellarium. The blog hasn't launched yet and the documentation is brand new, so you can help shape them from the start.",
     tasks: [
       "Improve pages on this website.",
       "Write guides, tutorials, and reference docs.",
       "Help launch the blog and write the first posts.",
     ],
-    links: [{ label: "Website on GitHub ↗", href: links.website, external: true }],
+    links: [
+      { label: "Website on GitHub ↗", href: links.website, external: true },
+      { label: "Read the docs ↗", href: links.docs, external: true },
+    ],
   },
   {
     title: "Decentralized architectures",
