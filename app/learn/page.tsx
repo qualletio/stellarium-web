@@ -28,9 +28,12 @@ const article = {
 const sample = `request GetTemperature {
   const weather: com.example.Weather
 
-  return weather.temperature(
-    city: "Oslo"
-  )
+  const reading = weather.temperature(city: "Oslo")
+  if (reading.error != null) {
+    return reading.error.message
+  }
+
+  return reading.value
 }`;
 
 export default function LearnPage() {
@@ -65,7 +68,7 @@ export default function LearnPage() {
         <div className={styles.sectionHead}><p className={styles.kicker}>02 / Open to anyone</p><h2>Host an API.<br /><em>Get paid for it.</em></h2></div>
         <div className={styles.body}>
           <p>Anyone can run a node and offer resources on it. A resource can be anything you can write as a function: a weather lookup, a price feed, a translation service, a database query.</p>
-          <p>When other people call your resource, you can charge for it. That means you can earn money from an API without building your own billing, sign up, or key management. The network handles discovery and payments so you can focus on what your API does.</p>
+          <p>When other people call your resource, you can set a price for each call. The caller&apos;s node pays you in SOL from an on-chain escrow, and only for calls that succeed. A valid payment is also the caller&apos;s permission to call, so you can earn money from an API without building your own billing, sign up, or key management. The network handles discovery and payments so you can focus on what your API does.</p>
           <p><Link href="/build">Learn how to run a node</Link></p>
         </div>
       </section>
@@ -73,10 +76,10 @@ export default function LearnPage() {
       <section className={styles.section}>
         <div className={styles.sectionHead}><p className={styles.kicker}>03 / RequestScript</p><h2>One small language<br />for every API.</h2></div>
         <div className={styles.body}>
-          <p>Stellarium runs on <strong>RequestScript</strong>, a programming language built for querying Stellarium APIs. It is nearly Turing complete, so you can write real logic, not just single calls.</p>
+          <p>Stellarium runs on <strong>RequestScript</strong>, a programming language built for querying Stellarium APIs. It has variables, objects, exact decimals, and <code>if</code>/<code>else</code>, so you can write real logic, not just single calls. It deliberately has no loops, so every request finishes, and your node knows the most a request can cost before it runs.</p>
           <p>A RequestScript program names the resources it wants and calls their functions. Here is a request that asks a weather resource for the temperature in Oslo:</p>
           <CodeBlock label="GetTemperature.req" code={sample} />
-          <p>Notice what is missing. There are no URLs, no status codes, no auth headers, and no retry logic. You say what you want, and your node figures out which peer hosts <code>com.example.Weather</code> and forwards the request there.</p>
+          <p>Notice what is missing. There are no URLs, no per-API keys, and no HTTP status codes to decode. Every call comes back as a result with either a <code>value</code> or an <code>error</code>, so your program decides what to do when something fails. You say what you want, and your node figures out which peer hosts <code>com.example.Weather</code> and forwards the request there.</p>
           <p>Want to dig into the language itself? See the <a href={links.requestscript} target="_blank" rel="noreferrer">RequestScript repository</a>.</p>
         </div>
       </section>
