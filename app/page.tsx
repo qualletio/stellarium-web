@@ -41,7 +41,7 @@ export default function Home() {
           <div className={`${styles.orbit} ${styles.orbitOne}`} /><div className={`${styles.orbit} ${styles.orbitTwo}`} /><div className={`${styles.orbit} ${styles.orbitThree}`} />
           <div className={styles.nodeCore}><StarMark className={styles.starMark} /></div>
           <div className={`${styles.satellite} ${styles.satelliteOne}`}><NodeIcon /></div><div className={`${styles.satellite} ${styles.satelliteTwo}`}><NodeIcon /></div><div className={`${styles.satellite} ${styles.satelliteThree}`}><NodeIcon /></div><div className={`${styles.satellite} ${styles.satelliteFour}`}><NodeIcon /></div>
-          <div className={styles.artLabel}><span>live topology</span><b>04 peers connected</b></div><div className={styles.orbitalTag}>RequestScript<small>program layer</small></div>
+          <div className={styles.orbitalTag}>RequestScript<small>program layer</small></div>
         </div>
       </section>
 
