@@ -4,6 +4,7 @@ export const links = {
   whitepaper: "https://github.com/qualletio/SIPs/blob/main/WHITEPAPER.md",
   sipsRepo: "https://github.com/qualletio/SIPs",
   requestscript: "https://github.com/qualletio/requestscript-js",
+  requestscriptSite: "https://requestscript-web-production.up.railway.app/",
   website: "https://github.com/qualletio/stellarium-web",
   docs: "https://docs.stellarium.sh",
   roadmap: "https://github.com/orgs/qualletio/projects/7/views/1",
@@ -33,6 +34,7 @@ export const navSections: NavSection[] = [
       { title: "How it works", description: "See a request travel across the network", href: "/#how-it-works" },
       { title: "Whitepaper", description: "The full design, written down", href: links.whitepaper, external: true },
       { title: "Documentation", description: "Guides and references for builders", href: links.docs, external: true },
+      { title: "RequestScript", description: "Powered by RequestScript", href: links.requestscriptSite, external: true },
     ],
   },
   {
