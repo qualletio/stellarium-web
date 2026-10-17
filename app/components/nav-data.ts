@@ -8,6 +8,7 @@ export const links = {
   website: "https://github.com/qualletio/stellarium-web",
   docs: "https://docs.stellarium.sh",
   roadmap: "https://github.com/orgs/qualletio/projects/7/views/1",
+  registry: "https://stellariumregistry.xyz/",
 };
 
 export type NavItem = {

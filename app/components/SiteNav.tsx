@@ -136,7 +136,7 @@ export default function SiteNav() {
         </li>
       </ul>
 
-      <Link className={styles.cta} href="/build" onClick={closeAll}>Run a node <span>→</span></Link>
+      <a className={styles.cta} href={links.registry} target="_blank" rel="noreferrer" onClick={closeAll}>View Registry <span aria-hidden="true">↗</span></a>
 
       <button
         type="button"
@@ -172,7 +172,7 @@ export default function SiteNav() {
           );
         })}
         <a className={styles.mobileTab} href={links.github} target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-        <Link className={styles.mobileCta} href="/build" onClick={closeAll}>Run a node <span>→</span></Link>
+        <a className={styles.mobileCta} href={links.registry} target="_blank" rel="noreferrer" onClick={closeAll}>View Registry <span aria-hidden="true">↗</span></a>
       </div>
     </nav>
   );
