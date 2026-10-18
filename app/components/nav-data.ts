@@ -9,6 +9,8 @@ export const links = {
   docs: "https://docs.stellarium.sh",
   roadmap: "https://github.com/orgs/qualletio/projects/7/views/1",
   registry: "https://stellariumregistry.xyz/",
+  explorer: "https://github.com/qualletio/stellarium-explorer",
+  explorerDownload: "https://github.com/qualletio/stellarium-explorer/releases/latest",
 };
 
 export type NavItem = {
@@ -40,13 +42,14 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Build",
-    paths: ["/build"],
+    paths: ["/build", "/build/explorer"],
     items: [
       { title: "Run a node", description: "Set up your own Stellarium node, step by step", href: "/build" },
       { title: "Prerequisites", description: "What you need installed before you start", href: "/build#prerequisites" },
       { title: "Register resources", description: "Host an API that the network can call", href: "/build#register" },
       { title: "Join a network", description: "Connect to peers and share resources", href: "/build#join" },
       { title: "HTTP API", description: "The routes every node exposes", href: "/build#http-api" },
+      { title: "Stellarium Explorer", description: "A desktop app for writing and running requests", href: "/build/explorer" },
     ],
   },
   {
