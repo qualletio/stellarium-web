@@ -35,7 +35,7 @@ export const navSections: NavSection[] = [
       { title: "How it works", description: "See a request travel across the network", href: "/#how-it-works" },
       { title: "Whitepaper", description: "The full design, written down", href: links.whitepaper, external: true },
       { title: "Documentation", description: "Guides and references for builders", href: links.docs, external: true },
-      { title: "RequestScript", description: "Powered by RequestScript", href: links.requestscriptSite, external: true },
+      { title: "RequestScript", description: "Stellarium queries are powered by RequestScript", href: links.requestscriptSite, external: true },
     ],
   },
   {
