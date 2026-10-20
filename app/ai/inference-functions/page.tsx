@@ -26,30 +26,55 @@ const article = {
 
 const readme = `${links.github}#inference-functions`;
 
-const declare = `{
-  name: "complete",
-  kind: "inference",
-  parameters: [
-    { name: "prompt", type: "string" },
-    { name: "maxTokens", type: "int32" },
+const declare = `import Anthropic from "@anthropic-ai/sdk";
+import type { StellariumResource } from "stellarium-ts";
+
+const client = new Anthropic();
+const arg = (args: { name: string; value: unknown }[], name: string) => args.find((a) => a.name === name)?.value;
+
+export const sonnet: StellariumResource = {
+  path: "sh.stellarium.inference.claude",
+  name: "Sonnet",
+  description: "A collection of functions for Claude Sonnet 5.5",
+  functions: [
+    {
+      name: "message",
+      kind: "inference",
+      parameters: [
+        { name: "prompt", type: "string", description: "The prompt to generate text from." },
+        { name: "maxTokens", type: "int32", description: "The maximum number of tokens to generate." },
+      ],
+      returnType: "string",
+      description: "Prompt the model to generate text.",
+      // Runs on your node before every paid call.
+      estimateInputTokens: async (args) => {
+        const { input_tokens } = await client.messages.countTokens({
+          model: "claude-sonnet-5-5",
+          messages: [{ role: "user", content: arg(args, "prompt") as string }],
+        });
+        return input_tokens;
+      },
+      exec: async (args) => {
+        const message = await client.messages.create({
+          model: "claude-sonnet-5-5",
+          max_tokens: arg(args, "maxTokens") as number,
+          messages: [{ role: "user", content: arg(args, "prompt") as string }],
+        });
+        const text = message.content.flatMap((block) => (block.type === "text" ? [block.text] : [])).join("");
+        return { value: text, usage: { inputTokens: message.usage.input_tokens, outputTokens: message.usage.output_tokens } };
+      },
+      paymentManifest: {
+        inputCostMicroUsdcPerMillionTokens: 2_500_000,   // $2.50 per million input tokens
+        outputCostMicroUsdcPerMillionTokens: 15_000_000, // $15 per million output tokens
+        recipientAddress: process.env.CLAUDE_SONNET_PAYMENT_ADDRESS!,
+      },
+    },
   ],
-  returnType: "string",
-  // Runs on your node before every paid call.
-  estimateInputTokens: async (args) => countTokens(prompt(args)),
-  exec: async (args) => {
-    const { text, inputTokens, outputTokens } = await runModel(prompt(args), maxTokens(args));
-    return { value: text, usage: { inputTokens, outputTokens } };
-  },
-  paymentManifest: {
-    inputCostMicroUsdcPerMillionTokens: 3_000_000,   // $3 per million input tokens
-    outputCostMicroUsdcPerMillionTokens: 15_000_000, // $15 per million output tokens
-    recipientAddress: "<provider wallet>",
-  },
-}`;
+};`;
 
 const script = `request Summarize {
-  const model: com.example.Echo
-  const reply = model.complete(prompt: "Summarize the plot of Hamlet", maxTokens: 400)
+  const sonnet: sh.stellarium.inference.claude.Sonnet
+  const reply = sonnet.message(prompt: "Summarize the plot of Hamlet", maxTokens: 400)
   return reply.value
 }`;
 
@@ -102,7 +127,7 @@ export default function InferenceFunctionsPage() {
       <section className={styles.section} id="declare">
         <div className={styles.sectionHead}><p className={styles.kicker}>02</p><h2>Host a<br /><em>model.</em></h2></div>
         <div className={styles.body}>
-          <p>An inference function is declared like any other function on a resource, with a few additions:</p>
+          <p>An inference function is declared like any other function on a resource, with a few additions. The examples on this page use Claude Sonnet, from the <code>sh.stellarium.inference.claude.Sonnet</code> resource.</p>
           <ul>
             <li><strong><code>kind: &quot;inference&quot;</code></strong> marks it as an inference function.</li>
             <li><strong>A <code>maxTokens: int32</code> parameter.</strong> The caller uses it to set the most output tokens the call may produce. The function can take any other parameters too.</li>
@@ -110,7 +135,7 @@ export default function InferenceFunctionsPage() {
             <li><strong>A per-token payment manifest</strong>, if the function is paid. It sets <code>inputCostMicroUsdcPerMillionTokens</code> and <code>outputCostMicroUsdcPerMillionTokens</code> instead of <code>costMicroUsdc</code>. Either rate can be <code>0</code>, for a model that charges only for input, for example.</li>
             <li><strong>An <code>estimateInputTokens(args)</code> estimator</strong>, if the function is paid. You write its body, just like <code>exec</code>, and it only runs on your node, so it can call a token counting API such as Anthropic&apos;s.</li>
           </ul>
-          <CodeBlock label="server.ts" code={declare} />
+          <CodeBlock label="sonnet.ts" code={declare} />
           <p>The node checks all of this when it starts, and <code>start</code> throws if an inference function is missing a piece. An inference function without a <code>paymentManifest</code> is free: it still needs <code>maxTokens</code>, but no estimator. Hosting paid functions also needs <code>OPERATOR_URL</code> set, as described in the <Link href="/build#environment">node guide</Link>.</p>
         </div>
       </section>
@@ -140,13 +165,13 @@ export default function InferenceFunctionsPage() {
         <div className={styles.body}>
           <p>Callers pass <code>maxTokens</code> like any other argument. Their node handles the estimate and the voucher.</p>
           <CodeBlock label="Summarize.req" code={script} />
-          <p>Say the model charges $3 per million input tokens and $15 per million output tokens, the prompt is estimated at 1,000 tokens, and the caller allows 400 output tokens:</p>
+          <p>Sonnet charges $2.50 per million input tokens and $15 per million output tokens. Say the prompt is estimated at 1,000 tokens and the caller allows 400 output tokens:</p>
           <div className={styles.tableWrap}>
             <table className={styles.table}>
               <thead><tr><th></th><th>Input</th><th>Output</th><th>Charge</th></tr></thead>
               <tbody>
-                <tr><td>Signed ceiling (<code>maxAmount</code>)</td><td>1,000 × 3</td><td>400 × 15</td><td>9,000 micro-USDC ($0.009)</td></tr>
-                <tr><td>Actual call, 250 output tokens</td><td>1,000 × 3</td><td>250 × 15</td><td>6,750 micro-USDC ($0.00675)</td></tr>
+                <tr><td>Signed ceiling (<code>maxAmount</code>)</td><td>1,000 × 2.5</td><td>400 × 15</td><td>8,500 micro-USDC ($0.0085)</td></tr>
+                <tr><td>Actual call, 250 output tokens</td><td>1,000 × 2.5</td><td>250 × 15</td><td>6,250 micro-USDC ($0.00625)</td></tr>
               </tbody>
             </table>
           </div>

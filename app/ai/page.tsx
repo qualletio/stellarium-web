@@ -24,10 +24,10 @@ const article = {
   publisher: { "@id": `${siteUrl}/#organization` },
 };
 
-const sample = `request AskModel {
-  const model: com.example.Echo
+const sample = `request AskClaude {
+  const sonnet: sh.stellarium.inference.claude.Sonnet
 
-  const reply = model.complete(prompt: "Write a haiku about Oslo", maxTokens: 200)
+  const reply = sonnet.message(prompt: "Write a haiku about Oslo", maxTokens: 200)
   if (reply.error != null) {
     return reply.error.message
   }
@@ -58,7 +58,7 @@ export default function AiPage() {
         <div className={styles.sectionHead}><p className={styles.kicker}>01 / Models as resources</p><h2>A model is<br />just a resource.</h2></div>
         <div className={styles.body}>
           <p>On Stellarium, every API is a <strong>resource</strong> hosted by some node. A resource has a name, like <code>com.example.Weather</code>, and a list of functions that programs can call. See <Link href="/learn">What is Stellarium?</Link> if you&apos;re new to these ideas.</p>
-          <p>An AI model fits the same shape. A provider wraps the model in a resource with a function such as <code>complete</code> that takes a prompt and returns text. Its node tells the network about it, and every other node can route calls to it.</p>
+          <p>An AI model fits the same shape. A provider wraps the model in a resource with a function that takes a prompt and returns text. For example, <code>sh.stellarium.inference.claude.Sonnet</code> offers Claude Sonnet through a <code>message</code> function. Its node tells the network about it, and every other node can route calls to it.</p>
           <p>So AI gets everything the network already does: discovery by name, routing between peers, results that carry a <code>value</code> or an <code>error</code>, and payment with no sign up or API keys.</p>
         </div>
       </section>
@@ -66,8 +66,8 @@ export default function AiPage() {
       <section className={`${styles.section} ${styles.dark}`}>
         <div className={styles.sectionHead}><p className={styles.kicker}>02 / Calling a model</p><h2>Ask a model<br /><em>from a script.</em></h2></div>
         <div className={styles.body}>
-          <p>Calling a model looks like calling any other function. The one difference is <code>maxTokens</code>: every model function takes it, and it sets the most output tokens the call may produce.</p>
-          <CodeBlock label="AskModel.req" code={sample} />
+          <p>Calling a model looks like calling any other function. This request asks Claude Sonnet for a haiku. The one difference is <code>maxTokens</code>: every model function takes it, and it sets the most output tokens the call may produce.</p>
+          <CodeBlock label="AskClaude.req" code={sample} />
           <p>Your node handles the rest. It finds the node that hosts the model, gets a price estimate, checks it against your spending limit, and pays for the call. If the model fails, you get an <code>error</code> your script can handle instead of a failed request.</p>
           <p>Because a model is a resource like the others, a single request can mix model calls with the rest of the network, such as a weather lookup or a price feed, and use their results together.</p>
         </div>
