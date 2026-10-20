@@ -53,6 +53,14 @@ export const navSections: NavSection[] = [
     ],
   },
   {
+    label: "AI",
+    paths: ["/ai", "/ai/inference-functions"],
+    items: [
+      { title: "AI on Stellarium", description: "Call and host AI models on the network", href: "/ai" },
+      { title: "Inference Functions", description: "Host AI models and charge per token", href: "/ai/inference-functions" },
+    ],
+  },
+  {
     label: "Participate",
     paths: ["/community", "/join", "/sips", "/governance"],
     items: [
