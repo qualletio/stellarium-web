@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import StarMark from "./StarMark";
+import ThemeToggle from "./ThemeToggle";
 import { links, navSections, type NavItem } from "./nav-data";
 import styles from "./SiteNav.module.css";
 
@@ -135,6 +136,8 @@ export default function SiteNav() {
           <a className={styles.tab} href={links.github} target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
         </li>
       </ul>
+
+      <ThemeToggle />
 
       <a className={styles.cta} href={links.registry} target="_blank" rel="noreferrer" onClick={closeAll}>View mainnet <span aria-hidden="true">↗</span></a>
 
