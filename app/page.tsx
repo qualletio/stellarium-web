@@ -64,6 +64,12 @@ export default function Home() {
 
       <section className={styles.build} id="build"><div className={styles.buildArt} aria-hidden="true"><div className={styles.bigStar}>✦</div><div className={styles.bigRing} /><div className={styles.sparkOne}>+</div><div className={styles.sparkTwo}>✦</div></div><div className={styles.buildContent}><div className={styles.sectionKicker}>03 — Ship your first resource</div><h2>From zero to<br />networked <em>fast.</em></h2><p>Install the TypeScript node, register a RequestScript resource, and start a server. Bootstrap from a peer whenever you&apos;re ready to join a wider constellation.</p><Link className={styles.primaryButton} href="/build">Read the guide <span>→</span></Link></div><div className={styles.command}><span>$</span> npm install stellarium-ts fastify requestscript <button aria-label="Copy install command">⧉</button></div></section>
 
+      <section className={styles.payments} id="payments">
+        <div className={styles.sectionKicker}>04 — Built-in monetization <span className={styles.soonBadge}>Coming soon</span></div>
+        <div className={styles.introGrid}><h2>Price any<br />resource <em>function.</em></h2><div className={styles.introBody}><p>Attach a per-call price to any function on a resource you host. Callers pay as they go, and payments are settled in USDC on Solana, with no billing system or API keys to run yourself.</p><a className={styles.inlineLink} href="https://docs.stellarium.sh/concepts/payments" target="_blank" rel="noreferrer">How payments work <Arrow /></a></div></div>
+        <div className={styles.priceCard}><div className={styles.windowTop}><span /><span /><span /><b>paymentManifest</b></div><pre><code>paymentManifest: {'{'}{"\n"}  costMicroUsdc: <strong>10000</strong>, <i>{"// $0.01 per call"}</i>{"\n"}  recipientAddress: <span>process.env.RECIPIENT_ADDRESS</span>,{"\n"}{'}'}</code></pre><div className={styles.settle}><span>settled in</span><b>USDC</b><small>on Solana</small></div></div>
+      </section>
+
       <section className={styles.close}><StarMark className={styles.starMark} /><p>There is more out there.</p><h2>Build for it.</h2><a className={styles.lightButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Get started <span>→</span></a></section>
       <SiteFooter />
     </main>
