@@ -68,7 +68,7 @@ export default function LearnPage() {
         <div className={styles.sectionHead}><p className={styles.kicker}>02 / Open to anyone</p><h2>Host an API.<br /><em>Get paid for it.</em></h2></div>
         <div className={styles.body}>
           <p>Anyone can run a node and offer resources on it. A resource can be anything you can write as a function: a weather lookup, a price feed, a translation service, a database query.</p>
-          <p>When other people call your resource, you can set a price for each call. The caller&apos;s node pays you in SOL from an on-chain escrow, and only for calls that succeed. A valid payment is also the caller&apos;s permission to call, so you can earn money from an API without building your own billing, sign up, or key management. The network handles discovery and payments so you can focus on what your API does.</p>
+          <p>When other people call your resource, you can set a price for each call. The caller&apos;s node pays you in USDC from an on-chain escrow, and only for calls that succeed. A valid payment is also the caller&apos;s permission to call, so you can earn money from an API without building your own billing, sign up, or key management. The network handles discovery and payments so you can focus on what your API does.</p>
           <p><Link href="/build">Learn how to run a node</Link></p>
         </div>
       </section>
