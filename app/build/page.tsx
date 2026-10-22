@@ -3,7 +3,7 @@ import CodeBlock from "../components/CodeBlock";
 import JsonLd from "../components/JsonLd";
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
-import StarMark from "../components/StarMark";
+import Spec from "../components/Spec";
 import { links } from "../components/nav-data";
 import { pageMetadata, siteUrl } from "../lib/site";
 import styles from "../components/content.module.css";
@@ -95,18 +95,24 @@ export default function BuildPage() {
       <section className={styles.hero}>
         <div>
           <p className={styles.kicker}>Build / Node guide</p>
-          <h1>Run a Stellarium<br /><em>node.</em></h1>
-          <p className={styles.lead}>A node is your piece of the Stellarium network. It hosts your APIs, learns about everyone else&apos;s, and forwards requests to the right place. This guide takes you from an empty folder to a running node in a few steps.</p>
+          <h1>Run a Stellarium node</h1>
+          <p className={styles.lead}>A node hosts your APIs, keeps a list of the resources its peers host, and forwards requests to the node that can answer them. This guide goes from an empty folder to a running node in four steps.</p>
           <div className={styles.actions}>
-            <a className={styles.button} href="#prerequisites">Start the guide <span>↓</span></a>
-            <a className={styles.textLink} href={readme} target="_blank" rel="noreferrer">View on GitHub ↗</a>
+            <a className={styles.button} href="#prerequisites">Start the guide <span aria-hidden="true">↓</span></a>
+            <a className={styles.textLink} href={readme} target="_blank" rel="noreferrer">README <span aria-hidden="true">↗</span></a>
           </div>
         </div>
-        <div className={styles.art} aria-hidden="true"><div className={styles.ring} /><div className={styles.ringTilt} /><div className={styles.spark}>✦</div><div className={styles.badge}>stellarium-ts<b>node</b></div></div>
+        <Spec label="Node package" items={[
+          ["Package", <code key="p">stellarium-ts</code>],
+          ["Runtime", "Node.js 20+"],
+          ["Server", "Fastify 5"],
+          ["Storage", <code key="s">requestscript.db</code>],
+          ["API", <code key="a">/v1</code>],
+        ]} />
       </section>
 
       <section className={styles.section} id="prerequisites">
-        <div className={styles.sectionHead}><p className={styles.kicker}>Step 01</p><h2>Get the<br />prerequisites.</h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>Step 01</p><h2>Prerequisites</h2></div>
         <div className={styles.body}>
           <p>You will need three things before you start:</p>
           <ul>
@@ -120,7 +126,7 @@ export default function BuildPage() {
       </section>
 
       <section className={styles.section} id="register">
-        <div className={styles.sectionHead}><p className={styles.kicker}>Step 02</p><h2>Register a resource<br /><em>and start.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>Step 02</p><h2>Register a resource and start the node</h2></div>
         <div className={styles.body}>
           <p>A <strong>resource</strong> is an object that RequestScript programs can call. Its <code>path</code> and <code>name</code> together make its full name, for example <code>com.example.Weather</code>. Each function lists its parameter types and return type, and its <code>exec</code> function runs right here in your process.</p>
           <p>Call <code>register</code> before <code>start</code>. When you call <code>start</code>, the node creates its SQLite database, mounts the HTTP API, and starts listening.</p>
@@ -159,7 +165,7 @@ export default function BuildPage() {
       </section>
 
       <section className={`${styles.section} ${styles.dark}`} id="join">
-        <div className={styles.sectionHead}><p className={styles.kicker}>Step 03</p><h2>Join a<br /><em>network.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>Step 03</p><h2>Join a network</h2></div>
         <div className={styles.body}>
           <p>A node with no <code>startingPeer</code> runs on its own. To join an existing network, set <code>startingPeer</code> to the address of a node that is already running. Once your node is listening, it does four things:</p>
         </div>
@@ -170,12 +176,12 @@ export default function BuildPage() {
           <article><span>04</span><div><h3>Shares its own resources</h3><p>It tells the network about the resources you registered, so others can call them.</p></div></article>
         </div>
         <div className={styles.body}>
-          <p className={styles.afterSteps}>After that, requests just work. If a program asks for a resource registered on your node, your <code>exec</code> function runs locally. If it asks for one hosted somewhere else, your node forwards the request to that peer and hands back its answer.</p>
+          <p className={styles.afterSteps}>After that, if a program asks for a resource registered on your node, your <code>exec</code> function runs locally. If it asks for one hosted somewhere else, your node forwards the request to that peer and hands back its answer.</p>
         </div>
       </section>
 
       <section className={styles.section} id="http-api">
-        <div className={styles.sectionHead}><p className={styles.kicker}>Step 04</p><h2>Talk to your<br />node over <em>HTTP.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>Step 04</p><h2>HTTP API</h2></div>
         <div className={styles.body}>
           <p>Every node exposes a small HTTP API under <code>/v1</code>.</p>
           <div className={styles.tableWrap}>
@@ -200,7 +206,7 @@ export default function BuildPage() {
         </div>
       </section>
 
-      <section className={styles.callout}><StarMark className={styles.starMark} /><p>Got a node running? Come say hi.</p><Link className={styles.lightButton} href="/community">Meet the community <span>→</span></Link></section>
+      <section className={styles.callout}><p>Stuck on a step? Ask in the Discord.</p><div className={styles.actions}><a className={styles.button} href={links.discord} target="_blank" rel="noreferrer">Discord <span aria-hidden="true">↗</span></a><Link className={styles.textLink} href="/build/explorer">Stellarium Explorer</Link></div></section>
       <SiteFooter />
     </main>
   );

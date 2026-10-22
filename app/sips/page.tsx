@@ -1,8 +1,9 @@
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
-import StarMark from "../components/StarMark";
+import Spec from "../components/Spec";
+import { links } from "../components/nav-data";
 import { pageMetadata } from "../lib/site";
-import styles from "./page.module.css";
+import styles from "../components/content.module.css";
 
 const sipDocument = "https://github.com/qualletio/SIPs#readme";
 
@@ -19,21 +20,33 @@ export default function SipsPage() {
       <SiteNav />
 
       <section className={styles.hero}>
-        <div className={styles.heroArt} aria-hidden="true"><div className={styles.ringOne} /><div className={styles.ringTwo} /><div className={styles.spark}>✦</div><div className={styles.sipBadge}>SIP<br /><b>001</b></div></div>
-        <div><p className={styles.kicker}>Community governance / living guide</p><h1>Stellarium<br /><em>Improvement</em><br />Proposals</h1><p className={styles.summary}>A clear path for proposing thoughtful improvements to the Stellarium network.</p><a className={styles.documentLink} href={sipDocument} target="_blank" rel="noreferrer">Go to the SIPs repository <span>↗</span></a></div>
+        <div>
+          <p className={styles.kicker}>Participate / SIPs</p>
+          <h1>Stellarium Improvement Proposals</h1>
+          <p className={styles.lead}>A SIP is a technical document that proposes a change to Stellarium or RequestScript. Proposals are written, numbered, and discussed in the SIPs repository.</p>
+          <div className={styles.actions}>
+            <a className={styles.button} href={sipDocument} target="_blank" rel="noreferrer">SIPs repository <span aria-hidden="true">↗</span></a>
+            <a className={styles.textLink} href={links.whitepaper} target="_blank" rel="noreferrer">Whitepaper <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <Spec label="SIP basics" items={[
+          ["Repository", <a key="r" href={links.sipsRepo} target="_blank" rel="noreferrer">qualletio/SIPs</a>],
+          ["Naming", <><code>SIP</code> + next number</>],
+          ["Covers", "Stellarium, RequestScript"],
+        ]} />
       </section>
 
-      <section className={styles.guidelines}>
-        <aside><span>BASICS</span><b>01 — 04</b><i /></aside>
-        <div className={styles.items}>
-          <article><span>01</span><div><h2>What is a Stellarium Improvement Proposal?</h2><p>A Stellarium Improvement Proposal, or SIPs for short, is a technical document that seeks to improve some aspects of the Stellarium and RequestScript platforms.</p></div></article>
-          <article><span>02</span><div><h2>Notation</h2><p>SIPs should be named starting with “SIP” and the number of the proposal following logically from the last number.</p></div></article>
-          <article><span>03</span><div><h2>Commenting on SIPs</h2><p>Be aware of the tone of your writing when commenting on an SIP. We are all here to improve the system, so do not take an overly negative tone or belittle the author.</p></div></article>
-          <article><span>04</span><div><h2>AI Use</h2><p>AI can be used to help write SIPs, but be careful that the guide is human readable. You may want to reformat “AI-isms” like em dashes.</p></div></article>
+      <section className={`${styles.section} ${styles.dark}`}>
+        <div className={styles.sectionHead}><p className={styles.kicker}>Guidelines</p><h2>Writing and reviewing a SIP</h2></div>
+        <div className={styles.steps}>
+          <article><span>01</span><div><h3>What a SIP is</h3><p>A Stellarium Improvement Proposal (SIP) is a technical document that proposes an improvement to some part of Stellarium or RequestScript.</p></div></article>
+          <article><span>02</span><div><h3>Naming</h3><p>Name a SIP with the prefix &ldquo;SIP&rdquo; followed by the next number after the most recent proposal.</p></div></article>
+          <article><span>03</span><div><h3>Commenting</h3><p>Keep comments constructive. Everyone is working to improve the system, so don&apos;t belittle the author or take an overly negative tone.</p></div></article>
+          <article><span>04</span><div><h3>Using AI</h3><p>You can use AI to help write a SIP, but make sure the result reads like a person wrote it. Edit out &ldquo;AI-isms&rdquo; such as heavy use of em dashes.</p></div></article>
         </div>
       </section>
 
-      <section className={styles.callout}><StarMark className={styles.starMark} /><p>Good ideas travel further when they are clear.</p><a href={sipDocument} target="_blank" rel="noreferrer">Read the SIP guide <span>→</span></a></section>
+      <section className={styles.callout}><p>Have an idea? Discuss it on Discord before writing it up.</p><div className={styles.actions}><a className={styles.button} href={sipDocument} target="_blank" rel="noreferrer">Read the SIP guide <span aria-hidden="true">↗</span></a><a className={styles.textLink} href={links.discord} target="_blank" rel="noreferrer">Discord <span aria-hidden="true">↗</span></a></div></section>
       <SiteFooter />
     </main>
   );

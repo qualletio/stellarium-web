@@ -7,7 +7,7 @@ export default function SiteFooter() {
   return (
     <footer className={styles.footer}>
       <Link className={styles.brand} href="/"><StarMark className={styles.starMark} /><span>stellarium</span></Link>
-      <p>Decentralized API infrastructure for an open internet.</p>
+      <p>Open source, peer-to-peer API network.</p>
       <div className={styles.links}>
         <Link href="/learn">Learn</Link>
         <Link href="/build">Build</Link>

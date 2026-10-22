@@ -15,11 +15,11 @@ export default function NotFound() {
 
       <section className={styles.hero}>
         <div>
-          <p className={styles.kicker}>404 / Lost in space</p>
-          <h1>Page not<br /><em>found.</em></h1>
-          <p className={styles.lead}>This page doesn&apos;t exist or has moved. Try one of these instead.</p>
+          <p className={styles.kicker}>Error 404</p>
+          <h1>Page not found</h1>
+          <p className={styles.lead}>This page doesn&apos;t exist or has moved.</p>
           <div className={styles.actions}>
-            <Link className={styles.button} href="/">Go home <span>→</span></Link>
+            <Link className={styles.button} href="/">Home <span aria-hidden="true">→</span></Link>
             <Link className={styles.textLink} href="/learn">What is Stellarium?</Link>
             <Link className={styles.textLink} href="/build">Run a node</Link>
           </div>

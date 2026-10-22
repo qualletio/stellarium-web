@@ -3,7 +3,7 @@ import CodeBlock from "../components/CodeBlock";
 import JsonLd from "../components/JsonLd";
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
-import StarMark from "../components/StarMark";
+import Spec from "../components/Spec";
 import { links } from "../components/nav-data";
 import { pageMetadata, siteUrl } from "../lib/site";
 import styles from "../components/content.module.css";
@@ -44,18 +44,23 @@ export default function AiPage() {
       <section className={styles.hero}>
         <div>
           <p className={styles.kicker}>AI / The basics</p>
-          <h1>AI on<br /><em>Stellarium.</em></h1>
+          <h1>AI models on Stellarium</h1>
           <p className={styles.lead}>AI models can be resources on Stellarium, just like any other API. You call them from RequestScript, pay per token in USDC, and don&apos;t need an account with each provider. Anyone who runs a model can offer it to the network and get paid for every call.</p>
           <div className={styles.actions}>
-            <Link className={styles.button} href="/ai/inference-functions">Read about inference functions <span>→</span></Link>
-            <a className={styles.textLink} href={links.registry} target="_blank" rel="noreferrer">Browse the registry ↗</a>
+            <Link className={styles.button} href="/ai/inference-functions">Inference functions <span aria-hidden="true">→</span></Link>
+            <a className={styles.textLink} href={links.registry} target="_blank" rel="noreferrer">Registry <span aria-hidden="true">↗</span></a>
           </div>
         </div>
-        <div className={styles.art} aria-hidden="true"><div className={styles.ring} /><div className={styles.ringTilt} /><div className={styles.spark}>✦</div><div className={styles.badge}>stellarium<b>ai</b></div></div>
+        <Spec label="AI on Stellarium" items={[
+          ["Function kind", <code key="k">inference</code>],
+          ["Pricing", "Per million input and output tokens"],
+          ["Settlement", "USDC"],
+          ["Example", <code key="e">sh.stellarium.inference.claude.Sonnet</code>],
+        ]} />
       </section>
 
       <section className={styles.section}>
-        <div className={styles.sectionHead}><p className={styles.kicker}>01 / Models as resources</p><h2>A model is<br />just a resource.</h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>01 / Models as resources</p><h2>A model is a resource</h2></div>
         <div className={styles.body}>
           <p>On Stellarium, every API is a <strong>resource</strong> hosted by some node. A resource has a name, like <code>com.example.Weather</code>, and a list of functions that programs can call. See <Link href="/learn">What is Stellarium?</Link> if you&apos;re new to these ideas.</p>
           <p>An AI model fits the same shape. A provider wraps the model in a resource with a function that takes a prompt and returns text. For example, <code>sh.stellarium.inference.claude.Sonnet</code> offers Claude Sonnet through a <code>message</code> function. Its node tells the network about it, and every other node can route calls to it.</p>
@@ -64,7 +69,7 @@ export default function AiPage() {
       </section>
 
       <section className={`${styles.section} ${styles.dark}`}>
-        <div className={styles.sectionHead}><p className={styles.kicker}>02 / Calling a model</p><h2>Ask a model<br /><em>from a script.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>02 / Calling a model</p><h2>Call a model from a script</h2></div>
         <div className={styles.body}>
           <p>Calling a model looks like calling any other function. This request asks Claude Sonnet for a haiku. The one difference is <code>maxTokens</code>: every model function takes it, and it sets the most output tokens the call may produce.</p>
           <CodeBlock label="AskClaude.req" code={sample} />
@@ -74,7 +79,7 @@ export default function AiPage() {
       </section>
 
       <section className={styles.section}>
-        <div className={styles.sectionHead}><p className={styles.kicker}>03 / Paying per token</p><h2>Pay for what<br /><em>the model uses.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>03 / Paying per token</p><h2>Per-token pricing</h2></div>
         <div className={styles.body}>
           <p>Most paid resources charge a flat amount per call. AI doesn&apos;t work that way, because a call&apos;s cost depends on how many tokens go in and come out. Model functions are <strong>inference functions</strong>, priced at a rate per million input tokens and a rate per million output tokens.</p>
           <ul>
@@ -87,15 +92,15 @@ export default function AiPage() {
       </section>
 
       <section className={styles.section}>
-        <div className={styles.sectionHead}><p className={styles.kicker}>04 / Hosting a model</p><h2>Offer a model.<br /><em>Get paid for it.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>04 / Hosting a model</p><h2>Host a model</h2></div>
         <div className={styles.body}>
           <p>If you can run a model, or call one you have access to, you can offer it on Stellarium. Run a <Link href="/build">node</Link>, register a resource whose function is declared as an inference function, and set your per-token rates. Your function reports the tokens each call used, and the network settles payment to your wallet in USDC.</p>
-          <p>You only write two pieces of code: the function that runs the model, and an estimator that counts a call&apos;s input tokens. Billing, sign up, keys and discovery are handled by the network.</p>
+          <p>You only write two pieces of code: the function that runs the model, and an estimator that counts a call&apos;s input tokens. The network handles billing, access, and discovery.</p>
         </div>
       </section>
 
       <section className={styles.section}>
-        <div className={styles.sectionHead}><p className={styles.kicker}>05 / Go deeper</p><h2>Keep reading.</h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>05 / Go deeper</p><h2>Further reading</h2></div>
         <div className={styles.cards}>
           <article className={styles.card}>
             <span>AI</span>
@@ -118,7 +123,7 @@ export default function AiPage() {
         </div>
       </section>
 
-      <section className={styles.callout}><StarMark className={styles.starMark} /><p>Ready to put a model on the network?</p><Link className={styles.lightButton} href="/ai/inference-functions">Host a model <span>→</span></Link></section>
+      <section className={styles.callout}><p>Put a model on the network.</p><div className={styles.actions}><Link className={styles.button} href="/ai/inference-functions">Host a model <span aria-hidden="true">→</span></Link><Link className={styles.textLink} href="/build">Run a node</Link></div></section>
       <SiteFooter />
     </main>
   );

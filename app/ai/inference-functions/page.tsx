@@ -3,7 +3,7 @@ import CodeBlock from "../../components/CodeBlock";
 import JsonLd from "../../components/JsonLd";
 import SiteFooter from "../../components/SiteFooter";
 import SiteNav from "../../components/SiteNav";
-import StarMark from "../../components/StarMark";
+import Spec from "../../components/Spec";
 import { links } from "../../components/nav-data";
 import { pageMetadata, siteUrl } from "../../lib/site";
 import styles from "../../components/content.module.css";
@@ -93,18 +93,23 @@ export default function InferenceFunctionsPage() {
       <section className={styles.hero}>
         <div>
           <p className={styles.kicker}>AI / Inference functions</p>
-          <h1>Pay for AI<br /><em>by the token.</em></h1>
+          <h1>Inference functions</h1>
           <p className={styles.lead}>Most functions on Stellarium have a flat price. AI models don&apos;t work that way: a call&apos;s cost depends on how many tokens go in and how many come out. Inference functions let providers charge per token, and let callers cap what they&apos;ll pay before anything runs.</p>
           <div className={styles.actions}>
-            <a className={styles.button} href="#what">Learn how it works <span>↓</span></a>
-            <a className={styles.textLink} href={readme} target="_blank" rel="noreferrer">View on GitHub ↗</a>
+            <a className={styles.button} href="#what">How it works <span aria-hidden="true">↓</span></a>
+            <a className={styles.textLink} href={readme} target="_blank" rel="noreferrer">README <span aria-hidden="true">↗</span></a>
           </div>
         </div>
-        <div className={styles.art} aria-hidden="true"><div className={styles.ring} /><div className={styles.ringTilt} /><div className={styles.spark}>✦</div><div className={styles.badge}>kind<b>inference</b></div></div>
+        <Spec label="Inference function summary" items={[
+          ["Declared with", <code key="k">kind: &quot;inference&quot;</code>],
+          ["Required", <code key="m">maxTokens: int32</code>],
+          ["Estimate", <code key="e">POST /v1/run/resource/estimate</code>],
+          ["Rates", "Micro-USDC per million tokens"],
+        ]} />
       </section>
 
       <section className={styles.section} id="what">
-        <div className={styles.sectionHead}><p className={styles.kicker}>01</p><h2>What is an<br /><em>inference function?</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>01</p><h2>What is an inference function?</h2></div>
         <div className={styles.body}>
           <p>Every resource function on Stellarium is one of two kinds. The original kind is a <strong>fixed</strong> function: it returns one value and, if it&apos;s paid, costs the same flat amount on every call.</p>
           <p>An <strong>inference</strong> function is a function that runs AI inference. Stellarium tracks the input and output tokens each call uses, estimates the cost before the call runs, and charges for the tokens actually used afterwards.</p>
@@ -125,7 +130,7 @@ export default function InferenceFunctionsPage() {
       </section>
 
       <section className={styles.section} id="declare">
-        <div className={styles.sectionHead}><p className={styles.kicker}>02</p><h2>Host a<br /><em>model.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>02</p><h2>Host a model</h2></div>
         <div className={styles.body}>
           <p>An inference function is declared like any other function on a resource, with a few additions. The examples on this page use Claude Sonnet, from the <code>sh.stellarium.inference.claude.Sonnet</code> resource.</p>
           <ul>
@@ -141,7 +146,7 @@ export default function InferenceFunctionsPage() {
       </section>
 
       <section className={`${styles.section} ${styles.dark}`} id="paying">
-        <div className={styles.sectionHead}><p className={styles.kicker}>03</p><h2>How a call<br /><em>gets paid.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>03</p><h2>How a call is paid</h2></div>
         <div className={styles.body}>
           <p>A call&apos;s charge, in micro-USDC, is its token counts times the advertised rates, rounded up:</p>
           <CodeBlock label="Charge" code={charge} />
@@ -161,7 +166,7 @@ export default function InferenceFunctionsPage() {
       </section>
 
       <section className={styles.section} id="example">
-        <div className={styles.sectionHead}><p className={styles.kicker}>04</p><h2>Call one<br /><em>from a script.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>04</p><h2>Call one from a script</h2></div>
         <div className={styles.body}>
           <p>Callers pass <code>maxTokens</code> like any other argument. Their node handles the estimate and the voucher.</p>
           <CodeBlock label="Summarize.req" code={script} />
@@ -181,13 +186,13 @@ export default function InferenceFunctionsPage() {
       </section>
 
       <section className={styles.section} id="discover">
-        <div className={styles.sectionHead}><p className={styles.kicker}>05</p><h2>Find models<br /><em>on the network.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>05</p><h2>Find models on the network</h2></div>
         <div className={styles.body}>
           <p>Inference functions are listed by <code>GET /v1/resources</code> on every node, alongside every other function. They carry <code>kind: &quot;inference&quot;</code> and their per-token payment manifest, so you can compare rates before calling anything. Browse them on the <a href={links.registry} target="_blank" rel="noreferrer">Stellarium registry</a>, or read the full reference in the <a href={readme} target="_blank" rel="noreferrer">stellarium-ts README</a>.</p>
         </div>
       </section>
 
-      <section className={styles.callout}><StarMark className={styles.starMark} /><p>Hosting a model? Tell us about it.</p><Link className={styles.lightButton} href="/community">Meet the community <span>→</span></Link></section>
+      <section className={styles.callout}><p>Hosting a model? Tell us about it on Discord.</p><div className={styles.actions}><a className={styles.button} href={links.discord} target="_blank" rel="noreferrer">Discord <span aria-hidden="true">↗</span></a><Link className={styles.textLink} href="/build">Run a node</Link></div></section>
       <SiteFooter />
     </main>
   );

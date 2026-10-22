@@ -1,7 +1,7 @@
 import Link from "next/link";
 import SiteFooter from "../components/SiteFooter";
 import SiteNav from "../components/SiteNav";
-import StarMark from "../components/StarMark";
+import Spec from "../components/Spec";
 import { links } from "../components/nav-data";
 import { pageMetadata } from "../lib/site";
 import styles from "../components/content.module.css";
@@ -22,7 +22,7 @@ type Area = {
 const areas: Area[] = [
   {
     title: "Research",
-    intro: "Stellarium is still young, and plenty of questions are open. If you like reading papers, comparing designs, and writing down what you find, this is for you.",
+    intro: "Many design questions are still open. Research means reading prior work, comparing designs, and writing up what you find.",
     tasks: [
       "Study how other networks handle discovery, routing, and payments.",
       "Poke holes in the whitepaper and suggest fixes.",
@@ -45,7 +45,7 @@ const areas: Area[] = [
   },
   {
     title: "Website, blog, and docs",
-    intro: "This site is how most people meet Stellarium. The blog hasn't launched yet and the documentation is brand new, so you can help shape them from the start.",
+    intro: "The website and docs are open source, and the blog hasn't launched yet. All three need writers, editors, and developers.",
     tasks: [
       "Improve pages on this website.",
       "Write guides, tutorials, and reference docs.",
@@ -58,7 +58,7 @@ const areas: Area[] = [
   },
   {
     title: "Decentralized architectures",
-    intro: "Make the network itself faster, safer, and harder to break. This is the place for people who enjoy distributed systems.",
+    intro: "Work on the node itself: peer discovery, routing, signing, and payments between nodes.",
     tasks: [
       "Work on peer discovery, routing, and syncing in the node.",
       "Think through trust, signing, and payments between nodes.",
@@ -78,19 +78,19 @@ export default function JoinPage() {
 
       <section className={styles.hero}>
         <div>
-          <p className={styles.kicker}>Participate / There&apos;s room for you here</p>
-          <h1>Contribute to<br /><em>Stellarium.</em></h1>
-          <p className={styles.lead}>You don&apos;t need permission to help. Pick an area below, take a look around, and jump into the Discord to tell us what you&apos;d like to work on.</p>
+          <p className={styles.kicker}>Participate / Contributing</p>
+          <h1>Contribute to Stellarium</h1>
+          <p className={styles.lead}>Contributions are open to anyone. Pick an area below, read through the relevant repository, and post in the Discord about what you want to work on.</p>
           <div className={styles.actions}>
-            <a className={styles.button} href={links.discord} target="_blank" rel="noreferrer">Say hi on Discord <span>↗</span></a>
-            <a className={styles.textLink} href="#areas">See the areas</a>
+            <a className={styles.button} href={links.discord} target="_blank" rel="noreferrer">Discord <span aria-hidden="true">↗</span></a>
+            <a className={styles.textLink} href="#areas">Areas</a>
           </div>
         </div>
-        <div className={styles.art} aria-hidden="true"><div className={styles.ring} /><div className={styles.ringTilt} /><div className={styles.spark}>✦</div><div className={styles.badge}>areas<b>04</b></div></div>
+        <Spec label="Contribution areas" items={areas.map((area, i): [string, string] => [String(i + 1).padStart(2, "0"), area.title])} />
       </section>
 
       <section className={styles.section} id="areas">
-        <div className={styles.sectionHead}><p className={styles.kicker}>Ways to help</p><h2>Pick a place<br /><em>to start.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>Areas</p><h2>Where help is needed</h2></div>
         <div className={styles.cards}>
           {areas.map((area, i) => (
             <article key={area.title} className={styles.card}>
@@ -110,16 +110,16 @@ export default function JoinPage() {
       </section>
 
       <section className={`${styles.section} ${styles.dark}`}>
-        <div className={styles.sectionHead}><p className={styles.kicker}>Getting started</p><h2>Your first<br />contribution.</h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>Getting started</p><h2>Your first contribution</h2></div>
         <div className={styles.steps}>
-          <article><span>01</span><div><h3>Join the Discord</h3><p>Introduce yourself and say which area interests you. Someone will point you in the right direction.</p></div></article>
+          <article><span>01</span><div><h3>Join the Discord</h3><p>Introduce yourself and say which area you want to work in.</p></div></article>
           <article><span>02</span><div><h3>Look around the repos</h3><p>Read the README, try running the code, and check the open issues.</p></div></article>
-          <article><span>03</span><div><h3>Start small</h3><p>Fix a typo, improve an example, or answer a question. Small changes are a great way to learn how things work.</p></div></article>
-          <article><span>04</span><div><h3>Go bigger</h3><p>Once you know your way around, take on a feature or write a <Link href="/sips">SIP</Link>.</p></div></article>
+          <article><span>03</span><div><h3>Start small</h3><p>Fix a typo, improve an example, or answer a question. Small changes are the quickest way to learn the codebase.</p></div></article>
+          <article><span>04</span><div><h3>Take on something larger</h3><p>Once you know your way around, take on a feature or write a <Link href="/sips">SIP</Link>.</p></div></article>
         </div>
       </section>
 
-      <section className={styles.callout}><StarMark className={styles.starMark} /><p>Good ideas travel further<br />with more people.</p><a className={styles.lightButton} href={links.discord} target="_blank" rel="noreferrer">Join Discord <span>↗</span></a></section>
+      <section className={styles.callout}><p>Tell us what you want to work on.</p><div className={styles.actions}><a className={styles.button} href={links.discord} target="_blank" rel="noreferrer">Discord <span aria-hidden="true">↗</span></a><Link className={styles.textLink} href="/sips">Write a SIP</Link></div></section>
       <SiteFooter />
     </main>
   );

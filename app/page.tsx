@@ -1,8 +1,10 @@
 import Link from "next/link";
+import CodeBlock from "./components/CodeBlock";
 import SiteFooter from "./components/SiteFooter";
 import SiteNav from "./components/SiteNav";
-import StarMark from "./components/StarMark";
+import { links } from "./components/nav-data";
 import { pageMetadata, siteDescription, siteName, siteTagline } from "./lib/site";
+import content from "./components/content.module.css";
 import styles from "./page.module.css";
 
 export const metadata = pageMetadata({
@@ -12,65 +14,165 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-const Arrow = () => <span className={styles.arrow} aria-hidden="true">↗</span>;
+const install = "npm install stellarium-ts fastify requestscript";
 
-const NodeIcon = () => (
-  <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
-    <circle cx="14" cy="14" r="4" fill="currentColor" />
-    <circle cx="5" cy="7" r="2" stroke="currentColor" strokeWidth="1.5" />
-    <circle cx="23" cy="8" r="2" stroke="currentColor" strokeWidth="1.5" />
-    <circle cx="6" cy="21" r="2" stroke="currentColor" strokeWidth="1.5" />
-    <circle cx="22" cy="20" r="2" stroke="currentColor" strokeWidth="1.5" />
-    <path d="m7 8 5 4m9-3-5 4m-4 4-5 3m9-3 4 2" stroke="currentColor" strokeWidth="1.2" />
-  </svg>
-);
+const resource = `await node.register({
+  metadata: {},
+  path: "com.example",
+  name: "Weather",
+  functions: [{
+    name: "temperature",
+    parameters: [{ name: "city", type: "string" }],
+    returnType: "int32",
+    exec: async (args) => 12,
+  }],
+});`;
+
+const request = `request GetTemperature {
+  const weather: com.example.Weather
+
+  const reading = weather.temperature(city: "Oslo")
+  if (reading.error != null) {
+    return reading.error.message
+  }
+
+  return reading.value
+}`;
+
+const response = `{ "returnValue": 12 }`;
+
+const manifest = `paymentManifest: {
+  costMicroUsdc: 10000, // $0.01 per call
+  recipientAddress: process.env.RECIPIENT_ADDRESS,
+}`;
+
+const facts = [
+  { term: "Language", value: "RequestScript" },
+  { term: "Node", value: "stellarium-ts" },
+  { term: "Runtime", value: "Node.js 20+, Fastify 5" },
+  { term: "Payments", value: "USDC on Solana" },
+];
+
+const features = [
+  { title: "Self-hosted", text: "A node runs inside your own Fastify app. Resource functions execute in your process, and their code never leaves your server." },
+  { title: "Called by name", text: "Programs refer to resources by full name, like com.example.Weather. Your node works out which peer hosts each one and forwards the call." },
+  { title: "Peer discovery", text: "Start a node with the address of any running peer. It copies that peer's peer and resource lists, then announces itself to the network." },
+];
+
+type LinkRow = { label: string; href: string; external?: boolean };
+
+const linkGroups: { title: string; rows: LinkRow[] }[] = [
+  {
+    title: "Build",
+    rows: [
+      { label: "Run a node", href: "/build" },
+      { label: "HTTP API reference", href: "/build#http-api" },
+      { label: "Stellarium Explorer", href: "/build/explorer" },
+    ],
+  },
+  {
+    title: "Learn",
+    rows: [
+      { label: "What is Stellarium?", href: "/learn" },
+      { label: "Documentation", href: links.docs, external: true },
+      { label: "Whitepaper", href: links.whitepaper, external: true },
+    ],
+  },
+  {
+    title: "Contribute",
+    rows: [
+      { label: "stellarium-ts on GitHub", href: links.github, external: true },
+      { label: "Discord", href: links.discord, external: true },
+      { label: "Improvement proposals", href: "/sips" },
+    ],
+  },
+];
 
 export default function Home() {
   return (
-    <main className={styles.page}>
+    <main className={content.page}>
       <SiteNav />
 
-      <section className={styles.hero} id="top">
-        <div className={styles.heroCopy}>
-          <div className={styles.eyebrow}><span className={styles.pulse} /> The next revolution in web API development</div>
-          <h1>The decentralized, <em>programmable</em> API network</h1>
-          <p className={styles.heroText}>Stellarium is a global platform for composing APIs into powerful programs.</p>
-          <div className={styles.actions}><Link className={styles.primaryButton} href="/build">Start building <span>→</span></Link><a className={styles.textButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Explore the code <Arrow /></a></div>
+      <section className={`${content.hero} ${styles.hero}`} id="top">
+        <div>
+          <p className={content.kicker}>Open source · Peer-to-peer</p>
+          <h1>The programmable API network</h1>
+          <p className={content.lead}>Stellarium is a decentralized, programmable API network where anyone can host an API and get paid for it.</p>
+          <div className={content.actions}>
+            <Link className={content.button} href="/build">Run a node <span aria-hidden="true">→</span></Link>
+            <a className={content.textLink} href={links.docs} target="_blank" rel="noreferrer">Documentation <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
-        <div className={styles.heroArt} aria-label="A decentralized network illustration" role="img">
-          <div className={`${styles.orbit} ${styles.orbitOne}`} /><div className={`${styles.orbit} ${styles.orbitTwo}`} /><div className={`${styles.orbit} ${styles.orbitThree}`} />
-          <div className={styles.nodeCore}><StarMark className={styles.starMark} /></div>
-          <div className={`${styles.satellite} ${styles.satelliteOne}`}><NodeIcon /></div><div className={`${styles.satellite} ${styles.satelliteTwo}`}><NodeIcon /></div><div className={`${styles.satellite} ${styles.satelliteThree}`}><NodeIcon /></div><div className={`${styles.satellite} ${styles.satelliteFour}`}><NodeIcon /></div>
-          <div className={styles.orbitalTag}>RequestScript<small>program layer</small></div>
-        </div>
-      </section>
-
-      <section className={styles.ticker} aria-hidden="true"><span>REQUESTSCRIPT NATIVE</span><i>✦</i><span>PEER-TO-PEER</span><i>✦</i><span>RESOURCE DISCOVERY</span><i>✦</i><span>LOCAL-FIRST</span><i>✦</i><span>REQUESTSCRIPT NATIVE</span></section>
-
-      <section className={styles.intro} id="network">
-        <div className={styles.sectionKicker}>01 — A new API primitive</div>
-        <div className={styles.introGrid}><h2>Make APIs<br />as open as the web.</h2><div className={styles.introBody}><p>Stellarium turns every API capability into a resource the network can find, call, and compose. Host a resource on your own node. Let other nodes discover it and pay for its use. </p><a className={styles.inlineLink} href="#how-it-works">See how it works <span>↓</span></a></div></div>
-        <div className={styles.principles}>
-          <article><span className={styles.number}>01</span><h3>Run sovereign</h3><p>Your node, your infrastructure, your resources. Stellarium embeds directly in your Fastify application.</p></article>
-          <article><span className={styles.number}>02</span><h3>Compose freely</h3><p>RequestScript makes remote and local resources feel like one elegant programming surface.</p></article>
-          <article><span className={styles.number}>03</span><h3>Discover naturally</h3><p>Join through a peer and your node learns the resources and routes around it.</p></article>
+        <div className={styles.install}>
+          <CodeBlock label="Install" code={install} />
         </div>
       </section>
 
-      <section className={styles.flow} id="how-it-works">
-        <div className={styles.flowCopy}><div className={styles.sectionKicker}>02 — One program, many places</div><h2>Write intent.<br /><em>The network routes it.</em></h2><p>Call resources by name, wherever they are hosted. One program gets one response. If a call fails, the failure comes back as a value your program can check, so there are no per-API status codes, keys, or glue code to manage.</p></div>
-        <div className={styles.flowVisual}><div className={styles.scriptWindow}><div className={styles.windowTop}><span /><span /><span /><b>GetTemperature.req</b></div><pre><code><i>request</i> GetTemperature {'{'}{"\n"}  <i>const</i> weather: <strong>com.example.Weather</strong>{"\n\n"}  <i>const</i> reading = weather.temperature(city: <span>&quot;Oslo&quot;</span>){"\n"}  <i>return</i> reading.value{"\n"}{'}'}</code></pre><div className={styles.result}><span>returnValue</span><b>12</b><small>• executed</small></div></div><div className={styles.routeLine}><span>routing request</span><i /></div><div className={styles.miniNodes}><div><NodeIcon /><small>your node</small></div><div><NodeIcon /><small>weather</small></div><div><NodeIcon /><small>payments</small></div></div></div>
+      <dl className={styles.facts}>
+        {facts.map((fact) => <div key={fact.term}><dt>{fact.term}</dt><dd>{fact.value}</dd></div>)}
+      </dl>
+
+      <section className={content.section} id="network">
+        <div className={content.sectionHead}><p className={content.kicker}>Overview</p><h2>Every API is a resource on the network</h2></div>
+        <div className={content.body}>
+          <p>A <strong>resource</strong> is a named object with typed functions, hosted on a node. Nodes share the resources they know about with their peers. Programs call resources by name, and each call is routed to the node that hosts it.</p>
+        </div>
+        <div className={styles.features}>
+          {features.map((feature) => <article key={feature.title}><h3>{feature.title}</h3><p>{feature.text}</p></article>)}
+        </div>
       </section>
 
-      <section className={styles.build} id="build"><div className={styles.buildArt} aria-hidden="true"><div className={styles.bigStar}>✦</div><div className={styles.bigRing} /><div className={styles.sparkOne}>+</div><div className={styles.sparkTwo}>✦</div></div><div className={styles.buildContent}><div className={styles.sectionKicker}>03 — Ship your first resource</div><h2>From zero to<br />networked <em>fast.</em></h2><p>Install the TypeScript node, register a RequestScript resource, and start a server. Bootstrap from a peer whenever you&apos;re ready to join a wider constellation.</p><Link className={styles.primaryButton} href="/build">Read the guide <span>→</span></Link></div><div className={styles.command}><span>$</span> npm install stellarium-ts fastify requestscript <button aria-label="Copy install command">⧉</button></div></section>
-
-      <section className={styles.payments} id="payments">
-        <div className={styles.sectionKicker}>04 — Built-in monetization <span className={styles.soonBadge}>Coming soon</span></div>
-        <div className={styles.introGrid}><h2>Price any<br />resource <em>function.</em></h2><div className={styles.introBody}><p>Attach a per-call price to any function on a resource you host. Callers pay as they go, and payments are settled in USDC on Solana, with no billing system or API keys to run yourself.</p><a className={styles.inlineLink} href="https://docs.stellarium.sh/concepts/payments" target="_blank" rel="noreferrer">How payments work <Arrow /></a></div></div>
-        <div className={styles.priceCard}><div className={styles.windowTop}><span /><span /><span /><b>paymentManifest</b></div><pre><code>paymentManifest: {'{'}{"\n"}  costMicroUsdc: <strong>10000</strong>, <i>{"// $0.01 per call"}</i>{"\n"}  recipientAddress: <span>process.env.RECIPIENT_ADDRESS</span>,{"\n"}{'}'}</code></pre><div className={styles.settle}><span>settled in</span><b>USDC</b><small>on Solana</small></div></div>
+      <section className={`${content.section} ${content.dark}`} id="how-it-works">
+        <div className={content.sectionHead}><p className={content.kicker}>How it works</p><h2>One request, any number of nodes</h2></div>
+        <div className={styles.columns}>
+          <div>
+            <h3><span>1</span> Host a resource</h3>
+            <p>Register functions on your node. They run locally when called.</p>
+            <CodeBlock label="server.ts" code={resource} />
+          </div>
+          <div>
+            <h3><span>2</span> Write a request</h3>
+            <p>Name the resources you need and call them. No URLs or API keys.</p>
+            <CodeBlock label="GetTemperature.req" code={request} />
+          </div>
+          <div>
+            <h3><span>3</span> Get one response</h3>
+            <p>Send the request to <code>POST /v1/run</code> on any node.</p>
+            <CodeBlock label="200 OK" code={response} />
+            <p>A failed resource call returns an <code>error</code> value the script can check. It doesn&apos;t fail the whole request.</p>
+          </div>
+        </div>
       </section>
 
-      <section className={styles.close}><StarMark className={styles.starMark} /><p>There is more out there.</p><h2>Build for it.</h2><a className={styles.lightButton} href="https://github.com/qualletio/stellarium-ts" target="_blank" rel="noreferrer">Get started <span>→</span></a></section>
+      <section className={content.section} id="payments">
+        <div className={content.sectionHead}><p className={content.kicker}>Payments <span className={content.soon}>Coming soon</span></p><h2>Charge per call, settled in USDC</h2></div>
+        <div className={content.body}>
+          <p>Add a payment manifest to any function on a resource you host. Callers pay per successful call from an on-chain escrow on Solana. A valid payment also authorizes the call, so there is no billing system or key management to run.</p>
+          <CodeBlock label="Function payment manifest" code={manifest} />
+          <p><a href={`${links.docs}/concepts/payments`} target="_blank" rel="noreferrer">How payments work ↗</a></p>
+        </div>
+      </section>
+
+      <section className={content.section} id="get-started">
+        <div className={content.sectionHead}><p className={content.kicker}>Get started</p><h2>Next steps</h2></div>
+        <div className={styles.linkGrid}>
+          {linkGroups.map((group) => (
+            <div key={group.title}>
+              <h3>{group.title}</h3>
+              <ul>
+                {group.rows.map((row) => (
+                  <li key={row.label}>
+                    {row.external
+                      ? <a href={row.href} target="_blank" rel="noreferrer">{row.label}<span aria-hidden="true">↗</span></a>
+                      : <Link href={row.href}>{row.label}<span aria-hidden="true">→</span></Link>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <SiteFooter />
     </main>
   );

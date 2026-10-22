@@ -3,7 +3,7 @@ import Link from "next/link";
 import JsonLd from "../../components/JsonLd";
 import SiteFooter from "../../components/SiteFooter";
 import SiteNav from "../../components/SiteNav";
-import StarMark from "../../components/StarMark";
+import Spec from "../../components/Spec";
 import { links } from "../../components/nav-data";
 import { pageMetadata, siteUrl } from "../../lib/site";
 import styles from "../../components/content.module.css";
@@ -41,14 +41,19 @@ export default function ExplorerPage() {
       <section className={styles.hero}>
         <div>
           <p className={styles.kicker}>Build / Desktop app</p>
-          <h1>Stellarium<br /><em>Explorer.</em></h1>
-          <p className={styles.lead}>Write RequestScript with completions straight from the network, browse every resource a registry knows about, and run requests against any node. All from one desktop app.</p>
+          <h1>Stellarium Explorer</h1>
+          <p className={styles.lead}>A desktop app for RequestScript. Write requests with completions from the network, browse every resource a registry knows about, and run requests against any node.</p>
           <div className={styles.actions}>
-            <a className={styles.button} href={links.explorerDownload} target="_blank" rel="noreferrer">Download <span>↓</span></a>
-            <a className={styles.textLink} href={links.explorer} target="_blank" rel="noreferrer">View on GitHub ↗</a>
+            <a className={styles.button} href={links.explorerDownload} target="_blank" rel="noreferrer">Download <span aria-hidden="true">↓</span></a>
+            <a className={styles.textLink} href={links.explorer} target="_blank" rel="noreferrer">Source <span aria-hidden="true">↗</span></a>
           </div>
         </div>
-        <div className={styles.art} aria-hidden="true"><div className={styles.ring} /><div className={styles.ringTilt} /><div className={styles.spark}>✦</div><div className={styles.badge}>macOS · Windows · Linux<b>explorer</b></div></div>
+        <Spec label="Stellarium Explorer" items={[
+          ["Platforms", "macOS, Windows, Linux"],
+          ["License", "Free and open source"],
+          ["Files", <><code>.rqs</code> + <code>.toml</code></>],
+          ["Updates", "Built in"],
+        ]} />
       </section>
 
       <div className={styles.showcase}>
@@ -58,7 +63,7 @@ export default function ExplorerPage() {
       </div>
 
       <section className={styles.section} id="workspaces">
-        <div className={styles.sectionHead}><p className={styles.kicker}>01 / Organize</p><h2>Keep requests<br />in <em>workspaces.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>01 / Organize</p><h2>Workspaces</h2></div>
         <div className={styles.body}>
           <p>Group requests into <strong>collections</strong> and <strong>folders</strong> inside a <strong>workspace</strong>. Open as many requests as you like in tabs, and save with <code>⌘S</code>.</p>
           <p>A workspace is just a folder on your disk. Each request is a <code>.rqs</code> file holding its RequestScript, next to a small <code>.toml</code> file with its name and settings. That means you can check a workspace into git and share it with your team. If you edit the files somewhere else, the app picks up the changes right away.</p>
@@ -66,7 +71,7 @@ export default function ExplorerPage() {
       </section>
 
       <section className={styles.section} id="editor">
-        <div className={styles.sectionHead}><p className={styles.kicker}>02 / Write</p><h2>An editor that<br />knows the <em>network.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>02 / Write</p><h2>An editor that knows the network</h2></div>
         <div className={styles.body}>
           <p>The editor reads the resource catalogue from your registry, so it knows every resource and function you can call. Type a dot after a resource and it suggests that resource&apos;s functions, along with their parameters, return types, descriptions and what each call costs.</p>
           <ul>
@@ -82,7 +87,7 @@ export default function ExplorerPage() {
       </section>
 
       <section className={`${styles.section} ${styles.dark}`} id="resources">
-        <div className={styles.sectionHead}><p className={styles.kicker}>03 / Discover</p><h2>Browse what&apos;s<br /><em>out there.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>03 / Discover</p><h2>Resource browser</h2></div>
         <div className={styles.body}>
           <p>The resource browser lists everything your registry knows about. Search by name, path or description, and filter for paid or restricted resources. Open a resource to see the node that hosts it, its website, and every function with its parameters and price.</p>
           <p>Found what you need? <strong>Insert into request</strong> adds the resource to the request you have open, ready to call.</p>
@@ -94,7 +99,7 @@ export default function ExplorerPage() {
       </section>
 
       <section className={styles.section} id="networks">
-        <div className={styles.sectionHead}><p className={styles.kicker}>04 / Connect</p><h2>Point it at<br />any <em>network.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>04 / Connect</p><h2>Registries and nodes</h2></div>
         <div className={styles.body}>
           <p>Each workspace, collection or request can choose two things: the <strong>registry</strong> it browses and completes from, and the <strong>node</strong> that runs its requests. Anything left empty is inherited. A request uses its own settings first, then its collection&apos;s, then its workspace&apos;s. That makes it easy to point one collection at a local node while the rest of the workspace talks to a shared one.</p>
           <p>If your node needs an API key, add it here. Keys are kept in your system keychain and never written into your workspace files, so you can share a workspace without leaking them.</p>
@@ -106,7 +111,7 @@ export default function ExplorerPage() {
       </section>
 
       <section className={styles.section} id="run">
-        <div className={styles.sectionHead}><p className={styles.kicker}>05 / Run</p><h2>Run it.<br />See what <em>comes back.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>05 / Run</p><h2>Run requests</h2></div>
         <div className={styles.body}>
           <p>Press <code>⌘Enter</code> and the request goes to your node, which calls each resource wherever it lives on the network. The response appears under the editor with its status and timing, formatted, with a raw view and a copy button. If a run takes too long, you can cancel it.</p>
           <p>Each resource call comes back with a <code>value</code> and an <code>error</code>, so a call that fails doesn&apos;t fail the whole request. Your script decides what to do with it.</p>
@@ -118,7 +123,7 @@ export default function ExplorerPage() {
       </section>
 
       <section className={styles.section} id="download">
-        <div className={styles.sectionHead}><p className={styles.kicker}>Get started</p><h2>Download<br />the <em>app.</em></h2></div>
+        <div className={styles.sectionHead}><p className={styles.kicker}>Get started</p><h2>Download</h2></div>
         <div className={styles.body}>
           <p>Stellarium Explorer is free and open source. Download the latest version for your computer from the <a href={links.explorerDownload} target="_blank" rel="noreferrer">releases page</a>:</p>
           <ul>
@@ -131,7 +136,7 @@ export default function ExplorerPage() {
         </div>
       </section>
 
-      <section className={styles.callout}><StarMark className={styles.starMark} /><p>Built something with it? Show us.</p><Link className={styles.lightButton} href="/community">Meet the community <span>→</span></Link></section>
+      <section className={styles.callout}><p>Found a bug or want a feature? Open an issue.</p><div className={styles.actions}><a className={styles.button} href={`${links.explorer}/issues`} target="_blank" rel="noreferrer">Issues <span aria-hidden="true">↗</span></a><Link className={styles.textLink} href="/build">Run a node</Link></div></section>
       <SiteFooter />
     </main>
   );
