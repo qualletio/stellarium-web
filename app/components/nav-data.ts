@@ -9,6 +9,7 @@ export const links = {
   docs: "https://docs.stellarium.sh",
   roadmap: "https://github.com/orgs/qualletio/projects/7/views/1",
   registry: "https://stellariumregistry.xyz/",
+  platform: "https://platform.stellarium.sh",
   explorer: "https://github.com/qualletio/stellarium-explorer",
   explorerDownload: "https://github.com/qualletio/stellarium-explorer/releases/latest",
 };
