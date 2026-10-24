@@ -4,7 +4,7 @@ export const links = {
   whitepaper: "https://github.com/qualletio/SIPs/blob/main/WHITEPAPER.md",
   sipsRepo: "https://github.com/qualletio/SIPs",
   requestscript: "https://github.com/qualletio/requestscript-js",
-  requestscriptSite: "https://requestscript-web-production.up.railway.app/",
+  requestscriptSite: "https://requestscript.org",
   website: "https://github.com/qualletio/stellarium-web",
   docs: "https://docs.stellarium.sh",
   roadmap: "https://github.com/orgs/qualletio/projects/7/views/1",
