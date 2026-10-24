@@ -74,7 +74,6 @@
 .card ul { padding-left:18px; font-size:15px; line-height:1.6; color:var(--muted); display:flex; flex-direction:column; gap:4px; }
 .cardLinks { margin-top:auto; padding-top:10px; display:flex; flex-wrap:wrap; gap:10px 20px; font-size:14px; font-weight:500; }
 .cardLinks a { border-bottom:1px solid currentColor; padding-bottom:2px; }
-.soon { margin-left:6px; padding:2px 6px; border:1px solid currentColor; color:var(--accent); font-family:var(--mono); font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; vertical-align:middle; }
 
 /* Steps list (numbered articles) */
 .steps { border-top:1px solid rgba(245,242,236,.25); margin-left:29%; }

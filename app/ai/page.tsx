@@ -10,7 +10,7 @@ import styles from "../components/content.module.css";
 
 export const metadata = pageMetadata({
   title: "AI on Stellarium",
-  description: "Call AI models from RequestScript and host your own on the Stellarium network, with per-token pricing paid in USDC.",
+  description: "Call AI models from RequestScript and host your own on the Stellarium network, with per-token pricing paid in USD.",
   path: "/ai",
   ownImage: true,
 });
@@ -45,7 +45,7 @@ export default function AiPage() {
         <div>
           <p className={styles.kicker}>AI / The basics</p>
           <h1>AI models on Stellarium</h1>
-          <p className={styles.lead}>AI models can be resources on Stellarium, just like any other API. You call them from RequestScript, pay per token in USDC, and don&apos;t need an account with each provider. Anyone who runs a model can offer it to the network and get paid for every call.</p>
+          <p className={styles.lead}>AI models can be resources on Stellarium, just like any other API. You call them from RequestScript, pay per token in USD, and don&apos;t need an account with each provider. Anyone who runs a model can offer it to the network and get paid for every call.</p>
           <div className={styles.actions}>
             <Link className={styles.button} href="/ai/inference-functions">Inference functions <span aria-hidden="true">→</span></Link>
             <a className={styles.textLink} href={links.registry} target="_blank" rel="noreferrer">Registry <span aria-hidden="true">↗</span></a>
@@ -54,7 +54,7 @@ export default function AiPage() {
         <Spec label="AI on Stellarium" items={[
           ["Function kind", <code key="k">inference</code>],
           ["Pricing", "Per million input and output tokens"],
-          ["Settlement", "USDC"],
+          ["Settlement", "USD"],
           ["Example", <code key="e">sh.stellarium.inference.claude.Sonnet</code>],
         ]} />
       </section>
@@ -94,7 +94,7 @@ export default function AiPage() {
       <section className={styles.section}>
         <div className={styles.sectionHead}><p className={styles.kicker}>04 / Hosting a model</p><h2>Host a model</h2></div>
         <div className={styles.body}>
-          <p>If you can run a model, or call one you have access to, you can offer it on Stellarium. Run a <Link href="/build">node</Link>, register a resource whose function is declared as an inference function, and set your per-token rates. Your function reports the tokens each call used, and the network settles payment to your wallet in USDC.</p>
+          <p>If you can run a model, or call one you have access to, you can offer it on Stellarium. Run a <Link href="/build">node</Link>, register a resource whose function is declared as an inference function, and set your per-token rates. Your function reports the tokens each call used, and you&apos;re paid in USD through Stripe.</p>
           <p>You only write two pieces of code: the function that runs the model, and an estimator that counts a call&apos;s input tokens. The network handles billing, access, and discovery.</p>
         </div>
       </section>

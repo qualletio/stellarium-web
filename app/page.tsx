@@ -42,15 +42,14 @@ const request = `request GetTemperature {
 const response = `{ "returnValue": 12 }`;
 
 const manifest = `paymentManifest: {
-  costMicroUsdc: 10000, // $0.01 per call
-  recipientAddress: process.env.RECIPIENT_ADDRESS,
+  costMicroUsd: 10000, // $0.01 per call
 }`;
 
 const facts = [
   { term: "Language", value: "RequestScript" },
   { term: "Node", value: "stellarium-ts" },
   { term: "Runtime", value: "Node.js 20+, Fastify 5" },
-  { term: "Payments", value: "USDC on Solana" },
+  { term: "Payments", value: "USD, per call" },
 ];
 
 const features = [
@@ -145,9 +144,9 @@ export default function Home() {
       </section>
 
       <section className={content.section} id="payments">
-        <div className={content.sectionHead}><p className={content.kicker}>Payments <span className={content.soon}>Coming soon</span></p><h2>Charge per call, settled in USDC</h2></div>
+        <div className={content.sectionHead}><p className={content.kicker}>Payments</p><h2>Charge per call, paid in USD</h2></div>
         <div className={content.body}>
-          <p>Add a payment manifest to any function on a resource you host. Callers pay per successful call from an on-chain escrow on Solana. A valid payment also authorizes the call, so there is no billing system or key management to run.</p>
+          <p>Add a payment manifest to any function on a resource you host. Callers pay per successful call from their organization&apos;s prepaid balance, and you&apos;re paid out through Stripe. A valid payment also authorizes the call, so there is no billing system or key management to run.</p>
           <CodeBlock label="Function payment manifest" code={manifest} />
           <p><a href={`${links.docs}/concepts/payments`} target="_blank" rel="noreferrer">How payments work ↗</a></p>
         </div>

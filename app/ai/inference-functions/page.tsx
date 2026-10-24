@@ -64,9 +64,8 @@ export const sonnet: StellariumResource = {
         return { value: text, usage: { inputTokens: message.usage.input_tokens, outputTokens: message.usage.output_tokens } };
       },
       paymentManifest: {
-        inputCostMicroUsdcPerMillionTokens: 2_500_000,   // $2.50 per million input tokens
-        outputCostMicroUsdcPerMillionTokens: 15_000_000, // $15 per million output tokens
-        recipientAddress: process.env.CLAUDE_SONNET_PAYMENT_ADDRESS!,
+        inputCostMicroUsdPerMillionTokens: 2_500_000,   // $2.50 per million input tokens
+        outputCostMicroUsdPerMillionTokens: 15_000_000, // $15 per million output tokens
       },
     },
   ],
@@ -80,9 +79,9 @@ const script = `request Summarize {
 
 const charge = "charge = ceil((inputTokens × inputRate + outputTokens × outputRate) / 1,000,000)";
 
-const callerEnv = `# The most this node will sign for in one inference call, in micro-USDC.
-# Defaults to COST_LIMIT_MICRO_USDC.
-INFERENCE_COST_LIMIT_MICRO_USDC=50000`;
+const callerEnv = `# The most this node will sign for in one inference call, in micro-USD.
+# Defaults to COST_LIMIT_MICRO_USD.
+INFERENCE_COST_LIMIT_MICRO_USD=50000`;
 
 export default function InferenceFunctionsPage() {
   return (
@@ -104,7 +103,7 @@ export default function InferenceFunctionsPage() {
           ["Declared with", <code key="k">kind: &quot;inference&quot;</code>],
           ["Required", <code key="m">maxTokens: int32</code>],
           ["Estimate", <code key="e">POST /v1/run/resource/estimate</code>],
-          ["Rates", "Micro-USDC per million tokens"],
+          ["Rates", "Micro-USD per million tokens"],
         ]} />
       </section>
 
@@ -120,7 +119,7 @@ export default function InferenceFunctionsPage() {
                 <tr><td>Declared with</td><td>nothing extra</td><td><code>kind: &quot;inference&quot;</code></td></tr>
                 <tr><td>Required parameters</td><td>none</td><td><code>maxTokens: int32</code>, plus any others</td></tr>
                 <tr><td><code>exec</code> returns</td><td>the value</td><td><code>{"{ value, usage: { inputTokens, outputTokens } }"}</code></td></tr>
-                <tr><td>Price</td><td><code>costMicroUsdc</code> per call</td><td>input and output rates per million tokens</td></tr>
+                <tr><td>Price</td><td><code>costMicroUsd</code> per call</td><td>input and output rates per million tokens</td></tr>
                 <tr><td>Estimator</td><td>none</td><td><code>estimateInputTokens</code>, when paid</td></tr>
               </tbody>
             </table>
@@ -137,7 +136,7 @@ export default function InferenceFunctionsPage() {
             <li><strong><code>kind: &quot;inference&quot;</code></strong> marks it as an inference function.</li>
             <li><strong>A <code>maxTokens: int32</code> parameter.</strong> The caller uses it to set the most output tokens the call may produce. The function can take any other parameters too.</li>
             <li><strong><code>exec</code> reports usage.</strong> It returns <code>{"{ value, usage: { inputTokens, outputTokens } }"}</code>.</li>
-            <li><strong>A per-token payment manifest</strong>, if the function is paid. It sets <code>inputCostMicroUsdcPerMillionTokens</code> and <code>outputCostMicroUsdcPerMillionTokens</code> instead of <code>costMicroUsdc</code>. Either rate can be <code>0</code>, for a model that charges only for input, for example.</li>
+            <li><strong>A per-token payment manifest</strong>, if the function is paid. It sets <code>inputCostMicroUsdPerMillionTokens</code> and <code>outputCostMicroUsdPerMillionTokens</code> instead of <code>costMicroUsd</code>. Either rate can be <code>0</code>, for a model that charges only for input, for example.</li>
             <li><strong>An <code>estimateInputTokens(args)</code> estimator</strong>, if the function is paid. You write its body, just like <code>exec</code>, and it only runs on your node, so it can call a token counting API such as Anthropic&apos;s.</li>
           </ul>
           <CodeBlock label="sonnet.ts" code={declare} />
@@ -148,13 +147,13 @@ export default function InferenceFunctionsPage() {
       <section className={`${styles.section} ${styles.dark}`} id="paying">
         <div className={styles.sectionHead}><p className={styles.kicker}>03</p><h2>How a call is paid</h2></div>
         <div className={styles.body}>
-          <p>A call&apos;s charge, in micro-USDC, is its token counts times the advertised rates, rounded up:</p>
+          <p>A call&apos;s charge, in micro-USD, is its token counts times the advertised rates, rounded up:</p>
           <CodeBlock label="Charge" code={charge} />
           <p>The caller can&apos;t know the output length ahead of time, and the provider can&apos;t be trusted to report any number it likes. So every paid call goes through these steps:</p>
         </div>
         <div className={styles.steps}>
           <article><span>01</span><div><h3>The caller asks for an estimate</h3><p>Before calling, the caller sends the call to the provider&apos;s <code>POST /v1/run/resource/estimate</code>. The provider runs its estimator and answers with <code>inputTokens</code> and <code>maxAmount</code>: the charge for those input tokens plus <code>maxTokens</code> output tokens.</p></div></article>
-          <article><span>02</span><div><h3>The caller checks it</h3><p>It recomputes <code>maxAmount</code> from the advertised rates, and refuses the call if it is over the node&apos;s <code>inferenceCostLimitMicroUsdc</code>. That way a caller never overpays.</p></div></article>
+          <article><span>02</span><div><h3>The caller checks it</h3><p>It recomputes <code>maxAmount</code> from the advertised rates, and refuses the call if it is over the node&apos;s <code>inferenceCostLimitMicroUsd</code>. That way a caller never overpays.</p></div></article>
           <article><span>03</span><div><h3>The caller signs a voucher</h3><p>It signs an inference voucher (<code>kind: &quot;inference&quot;</code>) carrying <code>maxAmount</code>, both rates and <code>maxTokens</code>, and sends it with the call.</p></div></article>
           <article><span>04</span><div><h3>The provider verifies it</h3><p>The voucher&apos;s rates must match the manifest and its <code>maxTokens</code> must match the call. The provider runs its estimator again and answers <code>402</code> with <code>requiredMaxAmount</code> if the voucher doesn&apos;t cover it. Inference never runs unpaid.</p></div></article>
           <article><span>05</span><div><h3>The provider reports usage</h3><p>After the call, the provider sends the voucher and the actual token counts to the operator. Output tokens are capped at <code>maxTokens</code>.</p></div></article>
@@ -175,8 +174,8 @@ export default function InferenceFunctionsPage() {
             <table className={styles.table}>
               <thead><tr><th></th><th>Input</th><th>Output</th><th>Charge</th></tr></thead>
               <tbody>
-                <tr><td>Signed ceiling (<code>maxAmount</code>)</td><td>1,000 × 2.5</td><td>400 × 15</td><td>8,500 micro-USDC ($0.0085)</td></tr>
-                <tr><td>Actual call, 250 output tokens</td><td>1,000 × 2.5</td><td>250 × 15</td><td>6,250 micro-USDC ($0.00625)</td></tr>
+                <tr><td>Signed ceiling (<code>maxAmount</code>)</td><td>1,000 × 2.5</td><td>400 × 15</td><td>8,500 micro-USD ($0.0085)</td></tr>
+                <tr><td>Actual call, 250 output tokens</td><td>1,000 × 2.5</td><td>250 × 15</td><td>6,250 micro-USD ($0.00625)</td></tr>
               </tbody>
             </table>
           </div>
