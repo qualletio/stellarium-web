@@ -1,0 +1,26 @@
+export const metadata = {
+  title: "Introducing the Stellarium blog",
+  description:
+    "A home for project news, release notes, and deeper writing about the network.",
+  date: "2026-10-26",
+};
+
+This is the new home for news and longer-form writing about Stellarium: release notes, design discussions, and walkthroughs of what people are building on the network.
+
+## Writing a post
+
+Posts are MDX files in `content/blog/`. Each one exports its title, description, and publish date, then continues as ordinary markdown:
+
+```mdx
+export const metadata = {
+  title: "My post",
+  description: "One sentence for the index and search results.",
+  date: "2026-10-26",
+};
+
+Regular **markdown** goes here.
+```
+
+The blog index lists posts newest first by `date`.
+
+If you have something to share, say so on [Discord](https://discord.gg/yDEBkaz6cB) or read [how to join](/join).

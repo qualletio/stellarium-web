@@ -1,0 +1,156 @@
+export const metadata = {
+  title: "Introducing Stellarium",
+  description:
+    "An API platform that aims to make requests and monetization easier",
+  date: "2026-10-25",
+};
+
+## What is Stellarium?
+
+Stellarium is a web API platform that connects independent APIs together.
+This allows anyone to stitch data together from many disparate systems.
+
+## Querying the platform
+
+Queries to Stellarium use a programming language called [RequestScript](https://requestscript.org).
+
+RequestScript is more advanced than GraphQL, but not as complicated as to make queries hard to understand or error-prone.
+
+```
+request MyRequest {
+  return "Hello World!"
+}
+```
+
+### Resources
+
+Resources are the brains of Stellarium.
+They are collections of functions implemented in a host language that can be invoked in RequestScript.
+
+Stellarium Resources can be invoked from any server without worrying about the host, retries, status codes, etc.
+
+```
+request MyRequest {
+  const weather: com.example.Weather
+
+  const temp = weather.temperature(city: "Oslo")
+
+  if (temp.error != null) {
+    return null
+  }
+
+  return temp.value
+}
+```
+
+The server your query was sent to takes care of finding the correct server to invoke the Resource Function.
+
+### Stitch data how you need, in the moment
+
+Unlike GraphQL, Stellarium Resource schemas are not rigid, and the data from resource functions can be stitched together how you need at the time.
+
+In the following example, the user generates a UUID, validates a vendor exists, a location exists, and saves an invoice all in one request to a server.
+In GraphQL or an API following RESTful practices, this would require multiple round trips back to the server.
+
+```
+request SaveInvoice {
+    const uuidGenerator: sh.stellarium.stdlib.Uuid
+    const vendors: com.grocer.Vendors
+    const locations: com.grocer.Locations
+    const invoices: com.grocer.Invoices
+
+    const vendorId = "e26123e2-c998-46e7-8931-db987b091ca4"
+    const locationId = "d585b14e-cc53-4a10-bc9a-be44d17a4dd9"
+
+    const vendor = vendors.getById(id: vendorId)
+    if (vendor.error != null) {
+        return {
+            error: "Vendor ${vendorId} not found"
+        }
+    }
+
+    const location = locations.getById(id: locationId)
+    if (location.error != null) {
+        return {
+            error: "Location ${locationId} not found"
+        }
+    }
+
+    return invoices.save(
+        invoiceId: uuidGenerator.new(),
+        vendorId: vendorId,
+        locationId: locationId
+    )
+}
+```
+
+With this, Stellarium effectively neutralizes a major flaw of microservice architectures--communication complexity.
+
+## Monetization
+
+Stellarium supports monetization by allowing users to preload their clients with funds using Stripe.
+
+API providers can set up payouts on their side to earn money from their APIs.
+
+Learn more about Monetization in [Stellarium Platform](https://platform.stellarium.sh/).
+
+## Last but not least, AI
+
+We cannot talk about engineering APIs without of course, bringing up AI.
+Stellarium supports inference APIs directly with **Inference Resource Functions**.
+This special type of function keeps track of input and output tokens and estimates token usage.
+
+```
+request CallClaude {
+    const sonnet: sh.stellarium.inference.claude.Sonnet
+
+    const result = sonnet.message(prompt: "Who are you?", maxTokens: 1000)
+
+    if (result.error != null) {
+        return result.error.message
+    }
+
+    return result.value
+}
+```
+
+### Effortlessly combine inference and APIs
+
+Easily combine the inputs and outputs of inference resource functions and fixed resource functions:
+
+```
+request CheckVendorBill {
+    const sonnet: sh.stellarium.inference.claude.Sonnet
+    const vendors: com.grocer.Vendors
+
+    const vendor = vendors.getById("e26123e2-c998-46e7-8931-db987b091ca4")
+    if (vendor.error != null) {
+      return "Vendor does not exist"
+    }
+
+    const result = sonnet.message(prompt: "Is this vendor attempting fraud? payment: $10,000 name: ${vendor.name}, location: ${vendor.location}", maxTokens: 1000)
+
+    if (result.error != null) {
+        return result.error.message
+    }
+
+    return result.value
+}
+```
+
+## Request for collaborators
+
+Stellarium is a big project and we are looking for more collaborators to help materialize this idea to the fullest.
+There are many ways to help on the project:
+
+- Research
+- Web development
+- Writing blog articles (like this one!)
+- Programming language development
+
+Join our [Discord](https://discord.gg/yDEBkaz6cB) to help out!
+
+## Conclusion
+
+Stellarium offers many advantages over traditional API solutions from REST, to SOAP, to GraphQL.
+[Learn more](https://docs.stellarium.sh) or [start building](https://stellarium.sh/build) an API today!

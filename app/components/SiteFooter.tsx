@@ -15,6 +15,7 @@ export default function SiteFooter() {
         <Link href="/join">Join</Link>
         <Link href="/sips">SIPs</Link>
         <Link href="/governance">Governance</Link>
+        <Link href="/blog">Blog</Link>
         <a href={links.discord} target="_blank" rel="noreferrer">Discord</a>
         <a href={links.github} target="_blank" rel="noreferrer">GitHub</a>
         <span>© 2026</span>

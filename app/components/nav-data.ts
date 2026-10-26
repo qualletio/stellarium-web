@@ -63,12 +63,13 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Participate",
-    paths: ["/community", "/join", "/sips", "/governance"],
+    paths: ["/community", "/join", "/sips", "/governance", "/blog"],
     items: [
       { title: "Community", description: "Find us on Discord and GitHub", href: "/community" },
       { title: "How to Join", description: "Contribution areas and first steps", href: "/join" },
       { title: "SIPs", description: "Propose improvements to the network", href: "/sips" },
       { title: "Governance", description: "The governance team (forming)", href: "/governance" },
+      { title: "Blog", description: "News, updates, and technical writing", href: "/blog" },
       { title: "Roadmap", description: "Planned and in-progress work", href: links.roadmap, external: true },
     ],
   },
