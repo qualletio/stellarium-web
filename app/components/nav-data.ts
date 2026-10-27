@@ -12,6 +12,7 @@ export const links = {
   platform: "https://platform.stellarium.sh",
   explorer: "https://github.com/qualletio/stellarium-explorer",
   explorerDownload: "https://github.com/qualletio/stellarium-explorer/releases/latest",
+  claudeSkills: "https://github.com/qualletio/stellarium-skills",
 };
 
 export type NavItem = {
