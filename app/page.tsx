@@ -100,7 +100,7 @@ export default function Home() {
           <div className={content.actions}>
             <Link className={content.button} href="/build">Deploy <span aria-hidden="true">→</span></Link>
             <a className={content.textLink} href={links.docs} target="_blank" rel="noreferrer">Documentation <span aria-hidden="true">↗</span></a>
-            <a className={content.textLink} href={links.claudeSkills} target="_blank" rel="noreferrer">Claude Skills <span aria-hidden="true">↗</span></a>
+            <a className={content.textLink} href={links.claudeSkills} target="_blank" rel="noreferrer">Claude Skill <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <div className={styles.install}>
