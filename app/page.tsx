@@ -95,10 +95,10 @@ export default function Home() {
       <section className={`${content.hero} ${styles.hero}`} id="top">
         <div>
           <p className={content.kicker}>Open source · Peer-to-peer</p>
-          <h1>The programmable API network</h1>
-          <p className={content.lead}>Stellarium is a decentralized, programmable API network where anyone can host an API and get paid for it.</p>
+          <h1>The API Network for Humans and Agents</h1>
+          <p className={content.lead}>Stellarium is an open, programmable API marketplace where anyone can host an API and get paid for it.</p>
           <div className={content.actions}>
-            <Link className={content.button} href="/build">Run a node <span aria-hidden="true">→</span></Link>
+            <Link className={content.button} href="/build">Deploy <span aria-hidden="true">→</span></Link>
             <a className={content.textLink} href={links.docs} target="_blank" rel="noreferrer">Documentation <span aria-hidden="true">↗</span></a>
           </div>
         </div>
