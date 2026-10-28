@@ -48,8 +48,7 @@ export default function LearnPage() {
           <h1>What is Stellarium?</h1>
           <p className={styles.lead}>Stellarium is a decentralized, programmable API network. Anyone can host an API on it, and anyone can call those APIs with a small program written in RequestScript.</p>
           <div className={styles.actions}>
-            <a className={styles.button} href={links.whitepaper} target="_blank" rel="noreferrer">Whitepaper <span aria-hidden="true">↗</span></a>
-            <Link className={styles.textLink} href="/build">Run a node</Link>
+            <Link className={styles.button} href="/build">Run a node <span aria-hidden="true">→</span></Link>
           </div>
         </div>
         <Spec label="Stellarium at a glance" items={[
@@ -92,12 +91,6 @@ export default function LearnPage() {
       <section className={styles.section}>
         <div className={styles.sectionHead}><p className={styles.kicker}>04 / Go deeper</p><h2>Further reading</h2></div>
         <div className={styles.cards}>
-          <article className={styles.card}>
-            <span>Whitepaper</span>
-            <h3>The full design</h3>
-            <p>How the network, payments, and RequestScript fit together, written out in detail.</p>
-            <div className={styles.cardLinks}><a href={links.whitepaper} target="_blank" rel="noreferrer">Read the whitepaper ↗</a></div>
-          </article>
           <article className={styles.card}>
             <span>Documentation</span>
             <h3>Guides and references</h3>

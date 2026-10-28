@@ -74,7 +74,6 @@ const linkGroups: { title: string; rows: LinkRow[] }[] = [
     rows: [
       { label: "What is Stellarium?", href: "/learn" },
       { label: "Documentation", href: links.docs, external: true },
-      { label: "Whitepaper", href: links.whitepaper, external: true },
     ],
   },
   {

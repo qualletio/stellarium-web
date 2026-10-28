@@ -26,7 +26,6 @@ export default function SipsPage() {
           <p className={styles.lead}>A SIP is a technical document that proposes a change to Stellarium or RequestScript. Proposals are written, numbered, and discussed in the SIPs repository.</p>
           <div className={styles.actions}>
             <a className={styles.button} href={sipDocument} target="_blank" rel="noreferrer">SIPs repository <span aria-hidden="true">↗</span></a>
-            <a className={styles.textLink} href={links.whitepaper} target="_blank" rel="noreferrer">Whitepaper <span aria-hidden="true">↗</span></a>
           </div>
         </div>
         <Spec label="SIP basics" items={[

@@ -25,11 +25,10 @@ const areas: Area[] = [
     intro: "Many design questions are still open. Research means reading prior work, comparing designs, and writing up what you find.",
     tasks: [
       "Study how other networks handle discovery, routing, and payments.",
-      "Poke holes in the whitepaper and suggest fixes.",
+      "Find gaps in the current design and suggest fixes.",
       "Turn your findings into a SIP.",
     ],
     links: [
-      { label: "Read the whitepaper ↗", href: links.whitepaper, external: true },
       { label: "Browse SIPs ↗", href: links.sipsRepo, external: true },
     ],
   },

@@ -15,7 +15,7 @@ export const metadata = pageMetadata({
 const repos = [
   { name: "stellarium-ts", text: "The TypeScript node. Start here if you want to run a node or work on the network itself.", href: links.github },
   { name: "requestscript-js", text: "The RequestScript language: parser, types, and runtime.", href: links.requestscript },
-  { name: "SIPs", text: "Stellarium Improvement Proposals and the whitepaper. Where big ideas get written down and discussed.", href: links.sipsRepo },
+  { name: "SIPs", text: "Stellarium Improvement Proposals. Where big ideas get written down and discussed.", href: links.sipsRepo },
   { name: "stellarium-web", text: "This website. Fix a typo, improve a page, or help build the docs and blog.", href: links.website },
 ];
 

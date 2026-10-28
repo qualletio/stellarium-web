@@ -1,7 +1,6 @@
 export const links = {
   discord: "https://discord.gg/yDEBkaz6cB",
   github: "https://github.com/qualletio/stellarium-ts",
-  whitepaper: "https://github.com/qualletio/SIPs/blob/main/WHITEPAPER.md",
   sipsRepo: "https://github.com/qualletio/SIPs",
   requestscript: "https://github.com/qualletio/requestscript-js",
   requestscriptSite: "https://requestscript.org",
@@ -37,7 +36,6 @@ export const navSections: NavSection[] = [
     items: [
       { title: "What is Stellarium?", description: "Nodes, resources, and RequestScript", href: "/learn" },
       { title: "How it works", description: "One request, traced across nodes", href: "/#how-it-works" },
-      { title: "Whitepaper", description: "The full protocol design", href: links.whitepaper, external: true },
       { title: "Documentation", description: "Guides and references for builders", href: links.docs, external: true },
       { title: "RequestScript", description: "The language Stellarium requests are written in", href: links.requestscriptSite, external: true },
     ],
