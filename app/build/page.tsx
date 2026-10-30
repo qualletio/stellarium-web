@@ -106,7 +106,7 @@ export default function BuildPage() {
           ["Package", <code key="p">stellarium-ts</code>],
           ["Runtime", "Node.js 20+"],
           ["Server", "Fastify 5"],
-          ["Storage", <code key="s">requestscript.db</code>],
+          ["Storage", <span key="s"><code>requestscript.db</code> or Postgres</span>],
           ["API", <code key="a">/v1</code>],
         ]} />
       </section>
@@ -160,7 +160,7 @@ export default function BuildPage() {
           <CodeBlock label=".env" code={envFile} />
           <p>Don&apos;t have signing keys yet? Run this script to generate a pair:</p>
           <CodeBlock label="Terminal" code={keygen} />
-          <p>The node keeps the peers and resources it learns about in a file called <code>requestscript.db</code> in your working directory. It is created the first time the node starts.</p>
+          <p>The node keeps the peers and resources it learns about in a file called <code>requestscript.db</code> in your working directory. It is created the first time the node starts. For more throughput, or to run several nodes against one database, set <code>DATABASE_URL</code> to a Postgres URL instead, and <code>DATABASE_SCHEMA</code> to give each node its own schema.</p>
         </div>
       </section>
 
@@ -192,6 +192,7 @@ export default function BuildPage() {
                 <tr><td><code>GET /v1/peers</code></td><td>none</td><td>Lists the peers this node knows about.</td></tr>
                 <tr><td><code>GET /v1/resources</code></td><td>none</td><td>Lists resources hosted here and resources learned from peers. Function code always stays on the node that hosts it.</td></tr>
                 <tr><td><code>POST /v1/run</code></td><td><code>{`{ "source": "..." }`}</code></td><td>Runs one RequestScript <code>request</code>. Requires your <code>API_KEY</code>.</td></tr>
+                <tr><td><code>POST /v1/contracts</code></td><td><code>{`{ "source": "..." }`}</code></td><td>Deploys a <Link href="/build/contracts">contract</Link>. Requires your <code>API_KEY</code> or a run token.</td></tr>
               </tbody>
             </table>
           </div>
@@ -203,6 +204,9 @@ export default function BuildPage() {
           <CodeBlock label="Response" code={curlResponse} />
           <p>A missing or wrong API key returns a <code>401</code>. If the script isn&apos;t a request, you get a <code>400</code> with <code>{`{ "error": "Invalid script" }`}</code>. Anything else that goes wrong returns a <code>500</code>. A resource call that fails does not fail the request: it comes back as an <code>error</code> value your script can check.</p>
           <p>To learn more about writing scripts, read the <a href={links.requestscript} target="_blank" rel="noreferrer">RequestScript docs</a>. For the full reference, see the <a href={readme} target="_blank" rel="noreferrer">stellarium-ts README</a>.</p>
+
+          <h3 id="contracts">Contracts</h3>
+          <p>Resources don&apos;t have to be TypeScript. Anyone with a run token can deploy a RequestScript <strong>contract</strong> to a node with <code>POST /v1/contracts</code>, and the network can call it like any other resource. See <Link href="/build/contracts">Contracts</Link>.</p>
         </div>
       </section>
 

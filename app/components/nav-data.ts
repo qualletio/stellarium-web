@@ -42,13 +42,14 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Build",
-    paths: ["/build", "/build/explorer"],
+    paths: ["/build", "/build/explorer", "/build/contracts"],
     items: [
       { title: "Run a node", description: "Install, configure, and start a node", href: "/build" },
       { title: "Prerequisites", description: "Node.js, Fastify, and RequestScript", href: "/build#prerequisites" },
       { title: "Register resources", description: "Host an API that the network can call", href: "/build#register" },
       { title: "Join a network", description: "Bootstrap from a peer and sync resources", href: "/build#join" },
       { title: "HTTP API", description: "The /v1 routes every node exposes", href: "/build#http-api" },
+      { title: "Contracts", description: "Deploy RequestScript resources to any node", href: "/build/contracts" },
       { title: "Stellarium Explorer", description: "A desktop app for writing and running requests", href: "/build/explorer" },
     ],
   },
