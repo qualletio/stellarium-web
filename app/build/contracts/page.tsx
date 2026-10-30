@@ -58,11 +58,13 @@ const callerEnv = `# The most one call to a contract on another node may cost, w
 # paid calls the contract makes, in micro-USD. Defaults to COST_LIMIT_MICRO_USD.
 CONTRACT_COST_LIMIT_MICRO_USD=50000`;
 
-const statePreview = `contract com.example.Counter: int32 {
-  var state count: int32 = 0
+const stateExample = `contract com.example.Visits(page: string): int32 {
+  var state total: int32 = 0
+  var state(caller.org) mine: int32 = 0
 
-  count = count + 1
-  return count
+  total = total + 1
+  mine = mine + 1
+  return mine
 }`;
 
 export default function ContractsPage() {
@@ -178,12 +180,19 @@ export default function ContractsPage() {
         </div>
       </section>
 
-      <section className={styles.section} id="next">
-        <div className={styles.sectionHead}><p className={styles.kicker}>07</p><h2>What&apos;s next: contract state</h2></div>
+      <section className={styles.section} id="state">
+        <div className={styles.sectionHead}><p className={styles.kicker}>07</p><h2>Keep state between calls</h2></div>
         <div className={styles.body}>
-          <p>Today a contract runs fresh on every call. We&apos;re planning <strong>state variables</strong>: values a contract keeps between calls, which only the contract&apos;s own code can change. That would let a contract hold a counter, a quota, a cache or an agent&apos;s memory, with the rules for changing it published alongside the code.</p>
-          <CodeBlock label="Proposed syntax" code={statePreview} />
-          <p>This isn&apos;t available yet, and the syntax may change. Follow it on the <a href={links.roadmap} target="_blank" rel="noreferrer">roadmap</a>, or propose ideas through a <Link href="/sips">SIP</Link>.</p>
+          <p>A contract can keep values between calls in <strong>state variables</strong>, declared with <code>var state</code> at the top of its body. Only the contract&apos;s own code can change them, so the published source is also the policy for its data: a counter, a quota, a cache, or an agent&apos;s memory.</p>
+          <CodeBlock label="Visits.req" code={stateExample} />
+          <ul>
+            <li><strong><code>var state name</code></strong> is one copy shared by every caller. <strong><code>var state(scope) name</code></strong> keeps a copy for each value of <code>scope</code>, any expression that evaluates to a string or a number.</li>
+            <li><strong><code>caller</code></strong> tells a contract who it runs for: <code>caller.org</code> is the organization paying for the call, and <code>caller.node</code> the node that made it. Both are verified, so <code>state(caller.org)</code> gives each organization a copy no one else can reach.</li>
+            <li><strong>State is saved only when a call succeeds.</strong> A call that fails, or would grow its state past the node&apos;s limit (64 KiB a scope by default), saves nothing.</li>
+            <li><strong>Calls to a stateful contract take turns</strong> on its node, so concurrent calls never lose an update.</li>
+            <li><strong>State outlives versions.</strong> A new version keeps it, and deleting the contract deletes it.</li>
+            <li><strong>State is private.</strong> A contract shares what it returns. Its owner and the node&apos;s operator can read the rest for debugging.</li>
+          </ul>
         </div>
       </section>
 
