@@ -45,6 +45,28 @@ const manifest = `paymentManifest: {
   costMicroUsd: 10000, // $0.01 per call
 }`;
 
+const stateful = `contract com.example.Assistant(message: string): string {
+  // One conversation per organization, kept between calls.
+  var state(caller.org) history: string = ""
+
+  const sonnet: sh.stellarium.inference.claude.Sonnet
+
+  const prompt = "\${history}User: \${message}\\nAssistant:"
+  const reply = sonnet.message(prompt: prompt, maxTokens: 1024)
+  if (reply.error != null) {
+    return reply.error.message
+  }
+
+  history = "\${prompt} \${reply.value}\\n\\n"
+  return reply.value
+}`;
+
+const appPatterns = [
+  { title: "Quotas and counters", text: "Keep one shared value for every caller, or a copy per organization with state(caller.org). The caller is verified, so no one can read or spend another organization's count." },
+  { title: "Caches", text: "Store the last answer from a paid resource and return it until it goes stale, so callers pay for one upstream call instead of many." },
+  { title: "Agent memory", text: "Give an agent a contract that remembers what it learned between runs, behind rules anyone can read in the contract's published source." },
+];
+
 const facts = [
   { term: "Language", value: "RequestScript" },
   { term: "Node", value: "stellarium-ts" },
@@ -65,6 +87,7 @@ const linkGroups: { title: string; rows: LinkRow[] }[] = [
     title: "Build",
     rows: [
       { label: "Run a node", href: "/build" },
+      { label: "Deploy a contract", href: "/build/contracts" },
       { label: "HTTP API reference", href: "/build#http-api" },
       { label: "Stellarium Explorer", href: "/build/explorer" },
     ],
@@ -149,6 +172,20 @@ export default function Home() {
           <p>Add a payment manifest to any function on a resource you host. Callers pay per successful call from their organization&apos;s prepaid balance, and you&apos;re paid out through Stripe. A valid payment also authorizes the call, so there is no billing system or key management to run.</p>
           <CodeBlock label="Function payment manifest" code={manifest} />
           <p><a href={`${links.docs}/concepts/payments`} target="_blank" rel="noreferrer">How payments work ↗</a></p>
+        </div>
+      </section>
+
+      <section className={content.section} id="contracts">
+        <div className={content.sectionHead}><p className={content.kicker}>Contracts</p><h2>Build applications on the network</h2></div>
+        <div className={content.body}>
+          <p>A <strong>contract</strong> is a RequestScript program you deploy to any node with <code>POST /v1/contracts</code>. It becomes a resource like any other: anyone can call it, and it can call any resource itself. You don&apos;t write TypeScript or run a server, and every call is paid for by whoever made it.</p>
+          <p>Contracts can keep <strong>state between calls</strong>. Declare a variable with <code>var state</code> and it&apos;s saved each time a call succeeds. Only the contract&apos;s own code can change it, so its published source is also the policy for its data.</p>
+          <CodeBlock label="Assistant.req" code={stateful} />
+          <p>This contract is a long-lived assistant. Each call adds the new message to the conversation it has stored, sends the whole history to Claude Sonnet through an <Link href="/ai/inference-functions">inference function</Link>, and saves the reply. Every organization gets its own conversation, and the caller pays for the tokens. A call that fails saves nothing, and calls to a stateful contract take turns, so no message is lost.</p>
+          <p><Link href="/build/contracts">How contracts work →</Link></p>
+        </div>
+        <div className={styles.features}>
+          {appPatterns.map((pattern) => <article key={pattern.title}><h3>{pattern.title}</h3><p>{pattern.text}</p></article>)}
         </div>
       </section>
 
