@@ -67,13 +67,6 @@ const appPatterns = [
   { title: "Agent memory", text: "Give an agent a contract that remembers what it learned between runs, behind rules anyone can read in the contract's published source." },
 ];
 
-const facts = [
-  { term: "Language", value: "RequestScript" },
-  { term: "Node", value: "stellarium-ts" },
-  { term: "Runtime", value: "Node.js 20+, Fastify 5" },
-  { term: "Payments", value: "USD, per call" },
-];
-
 const features = [
   { title: "Self-hosted", text: "A node runs inside your own Fastify app. Resource functions execute in your process, and their code never leaves your server." },
   { title: "Called by name", text: "Programs refer to resources by full name, like com.example.Weather. Your node works out which peer hosts each one and forwards the call." },
@@ -129,10 +122,6 @@ export default function Home() {
           <CodeBlock label="Install" code={install} />
         </div>
       </section>
-
-      <dl className={styles.facts}>
-        {facts.map((fact) => <div key={fact.term}><dt>{fact.term}</dt><dd>{fact.value}</dd></div>)}
-      </dl>
 
       <section className={content.section} id="network">
         <div className={content.sectionHead}><p className={content.kicker}>Overview</p><h2>Every API is a resource on the network</h2></div>

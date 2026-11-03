@@ -3,14 +3,6 @@
 .install { align-self:end; }
 .install > div { margin:0; }
 
-/* Facts strip under the hero */
-.facts { display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid var(--line); }
-.facts > div { padding:22px 8vw 24px; border-right:1px solid var(--line); }
-.facts > div + div { padding-left:28px; padding-right:28px; }
-.facts > div:last-child { border-right:0; }
-.facts dt { font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:6px; }
-.facts dd { font-size:16px; font-weight:500; letter-spacing:-.01em; }
-
 /* Feature cells */
 .features { display:grid; grid-template-columns:repeat(3,1fr); margin-top:64px; border-top:1px solid var(--line); }
 .features article { padding:28px 32px 8px 0; }
@@ -50,10 +42,6 @@
 
 @media (max-width:900px) {
   .hero { padding-top:72px; padding-bottom:64px; }
-  .facts { grid-template-columns:repeat(2,1fr); }
-  .facts > div, .facts > div + div { padding:20px 6vw; border-bottom:1px solid var(--line); }
-  .facts > div:nth-child(2n) { border-right:0; }
-  .facts > div:nth-last-child(-n+2) { border-bottom:0; }
   .features, .linkGrid { grid-template-columns:1fr; }
   .features article, .features article + article { padding:24px 0; border-left:0; border-bottom:1px solid var(--line); }
   .linkGrid > div + div { border-left:0; border-top:1px solid var(--line); }
@@ -61,8 +49,5 @@
 
 @media (max-width:620px) {
   .hero h1 { font-size:42px; }
-  .facts { grid-template-columns:1fr; }
-  .facts > div, .facts > div + div { border-right:0; border-bottom:1px solid var(--line); }
-  .facts > div:nth-last-child(2) { border-bottom:1px solid var(--line); }
   .linkGrid > div { padding:22px 20px 12px; }
 }
