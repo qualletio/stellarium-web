@@ -9,11 +9,10 @@ import { links, navSections, type NavItem } from "./nav-data";
 import styles from "./SiteNav.module.css";
 
 const CLOSE_DELAY = 150;
-const EXPLORE = "Explore";
 
-const exploreLinks = [
-  { label: "Resource Registry", href: links.registry },
-  { label: "Platform", href: links.platform },
+const ctaLinks = [
+  { label: "Explore", href: links.registry, primary: true },
+  { label: "Login", href: links.platform, primary: false },
 ];
 
 function ItemLink({ item, onNavigate }: { item: NavItem; onNavigate: () => void }) {
@@ -146,26 +145,11 @@ export default function SiteNav() {
       <ThemeToggle />
 
       <div className={styles.ctaWrap}>
-        <button
-          type="button"
-          className={`${styles.cta} ${open === EXPLORE ? styles.ctaOpen : ""}`}
-          aria-expanded={open === EXPLORE}
-          aria-controls="nav-explore"
-          onClick={() => {
-            cancelClose();
-            openedByHover.current = false;
-            setOpen(open === EXPLORE ? null : EXPLORE);
-          }}
-        >
-          Explore <span className={styles.chevron} aria-hidden="true">▾</span>
-        </button>
-        <div id="nav-explore" className={styles.ctaMenu} hidden={open !== EXPLORE}>
-          {exploreLinks.map((link) => (
-            <a key={link.label} className={styles.ctaMenuItem} href={link.href} target="_blank" rel="noreferrer" onClick={closeAll}>
-              {link.label} <span aria-hidden="true">↗</span>
-            </a>
-          ))}
-        </div>
+        {ctaLinks.map((link) => (
+          <a key={link.label} className={link.primary ? styles.cta : styles.ctaSecondary} href={link.href} target="_blank" rel="noreferrer">
+            {link.label} <span aria-hidden="true">↗</span>
+          </a>
+        ))}
       </div>
 
       <button
@@ -203,8 +187,8 @@ export default function SiteNav() {
         })}
         <a className={styles.mobileTab} href={links.github} target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
         <div className={styles.mobileCtas}>
-          {exploreLinks.map((link) => (
-            <a key={link.label} className={styles.mobileCta} href={link.href} target="_blank" rel="noreferrer" onClick={closeAll}>
+          {ctaLinks.map((link) => (
+            <a key={link.label} className={link.primary ? styles.mobileCta : `${styles.mobileCta} ${styles.mobileCtaSecondary}`} href={link.href} target="_blank" rel="noreferrer" onClick={closeAll}>
               {link.label} <span aria-hidden="true">↗</span>
             </a>
           ))}

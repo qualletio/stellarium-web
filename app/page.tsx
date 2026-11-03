@@ -120,8 +120,8 @@ export default function Home() {
           <h1>The API Network for Humans and Agents</h1>
           <p className={content.lead}>Stellarium is an open, programmable API marketplace where anyone can host an API and get paid for it.</p>
           <div className={content.actions}>
-            <Link className={content.button} href="/build">Deploy <span aria-hidden="true">→</span></Link>
-            <a className={content.textLink} href={links.docs} target="_blank" rel="noreferrer">Documentation <span aria-hidden="true">↗</span></a>
+            <a className={content.button} href={links.registry} target="_blank" rel="noreferrer">Explore <span aria-hidden="true">↗</span></a>
+            <Link className={content.textLink} href="/build">Deploy <span aria-hidden="true">→</span></Link>
             <a className={content.textLink} href={links.claudeSkills} target="_blank" rel="noreferrer">Claude Skill <span aria-hidden="true">↗</span></a>
           </div>
         </div>
