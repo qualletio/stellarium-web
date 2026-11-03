@@ -67,6 +67,20 @@ const appPatterns = [
   { title: "Agent memory", text: "Give an agent a contract that remembers what it learned between runs, behind rules anyone can read in the contract's published source." },
 ];
 
+const onOrder = `// com.example declares: event com.example.OrderPlaced(orderId: string, total: decimal)
+// and its Checkout contract emits one with each order.
+
+contract com.example.OnOrderPlaced consumes com.example.OrderPlaced {
+  const receipts: com.example.Receipts
+  receipts.send(orderId: orderId, total: total)
+}`;
+
+const eventPatterns = [
+  { title: "Webhooks without servers", text: "Subscribe to another organization's events with a contract on any node, instead of exposing an endpoint and checking signatures yourself." },
+  { title: "Pipelines", text: "An event contract can emit events of its own, so one event can start a chain of up to four steps across nodes." },
+  { title: "Private workflows", text: "Mark an event type restricted, and only contracts your own organization deployed receive it." },
+];
+
 const features = [
   { title: "Self-hosted", text: "A node runs inside your own Fastify app. Resource functions execute in your process, and their code never leaves your server." },
   { title: "Called by name", text: "Programs refer to resources by full name, like com.example.Weather. Your node works out which peer hosts each one and forwards the call." },
@@ -81,6 +95,7 @@ const linkGroups: { title: string; rows: LinkRow[] }[] = [
     rows: [
       { label: "Run a node", href: "/build" },
       { label: "Deploy a contract", href: "/build/contracts" },
+      { label: "React to events", href: "/build/events" },
       { label: "HTTP API reference", href: "/build#http-api" },
       { label: "Stellarium Explorer", href: "/build/explorer" },
     ],
@@ -175,6 +190,19 @@ export default function Home() {
         </div>
         <div className={styles.features}>
           {appPatterns.map((pattern) => <article key={pattern.title}><h3>{pattern.title}</h3><p>{pattern.text}</p></article>)}
+        </div>
+      </section>
+
+      <section className={content.section} id="events">
+        <div className={content.sectionHead}><p className={content.kicker}>Events</p><h2>Contracts that react to each other</h2></div>
+        <div className={content.body}>
+          <p>An organization declares an <strong>event type</strong> and its scripts <code>emit</code> events of that type. Anyone can deploy an <strong>event contract</strong> on any node that <code>consumes</code> it, and runs with each event, wherever it was published.</p>
+          <CodeBlock label="OnOrderPlaced.req" code={onOrder} />
+          <p>Events are signed by the node that published them and checked by every node that receives them, so only the type&apos;s owner can emit it. A run that fails publishes nothing, and each event contract runs once per event. Whoever deploys an event contract pays for its runs, so subscribing never costs the publisher.</p>
+          <p><Link href="/build/events">How events work →</Link></p>
+        </div>
+        <div className={styles.features}>
+          {eventPatterns.map((pattern) => <article key={pattern.title}><h3>{pattern.title}</h3><p>{pattern.text}</p></article>)}
         </div>
       </section>
 
