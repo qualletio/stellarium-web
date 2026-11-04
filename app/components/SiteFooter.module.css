@@ -1,6 +1,6 @@
-.footer { padding:32px 8vw; display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:20px 40px; background:var(--paper); color:var(--ink); border-top:1px solid var(--line); font-size:13px; font-family:var(--sans); }
-.brand { display:flex; align-items:center; gap:9px; font-size:16px; font-weight:600; letter-spacing:-.02em; }
-.starMark { width:20px; height:20px; }
+.footer { padding:32px 8vw; display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:20px 40px; background:var(--paper); color:var(--ink); border-top:1px dashed var(--line); font-size:13px; font-family:var(--sans); }
+.brand { display:flex; align-items:center; gap:9px; font-size:16px; font-weight:600; letter-spacing:0; }
+.starMark { width:20px; height:20px; color:var(--accent); filter:drop-shadow(0 0 6px var(--accent-dim)); }
 .footer p { color:var(--muted); font-family:var(--mono); font-size:12px; }
 .links { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px 20px; color:var(--muted); }
 .links a { color:var(--ink); }

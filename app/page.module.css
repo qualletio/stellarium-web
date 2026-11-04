@@ -7,18 +7,18 @@
 .features { display:grid; grid-template-columns:repeat(3,1fr); margin-top:64px; border-top:1px solid var(--line); }
 .features article { padding:28px 32px 8px 0; }
 .features article + article { padding-left:32px; border-left:1px solid var(--line); }
-.features h3 { font-size:18px; font-weight:600; letter-spacing:-.02em; margin-bottom:10px; }
+.features h3 { font-size:18px; font-weight:600; letter-spacing:0; margin-bottom:10px; }
 .features p { font-size:15px; line-height:1.6; color:var(--muted); }
 
 /* Three-step code walkthrough */
-.columns { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-top:1px solid rgba(245,242,236,.2); }
+.columns { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); border-top:1px solid var(--border); }
 .columns > div { padding:26px 24px 0; min-width:0; }
 .columns > div:first-child { padding-left:0; }
 .columns > div:last-child { padding-right:0; }
-.columns > div + div { border-left:1px solid rgba(245,242,236,.2); }
-.columns h3 { display:flex; align-items:center; gap:10px; font-size:17px; font-weight:600; letter-spacing:-.01em; }
-.columns h3 span { display:grid; place-items:center; width:22px; height:22px; border:1px solid rgba(245,242,236,.3); font-family:var(--mono); font-size:11px; font-weight:400; color:#c5e965; }
-.columns p { margin-top:10px; font-size:15px; line-height:1.55; color:#acc0c1; }
+.columns > div + div { border-left:1px solid var(--border); }
+.columns h3 { display:flex; align-items:center; gap:10px; font-size:17px; font-weight:600; letter-spacing:0; }
+.columns h3 span { display:grid; place-items:center; width:22px; height:22px; border:1px solid var(--border); font-family:var(--mono); font-size:11px; font-weight:400; color:var(--accent); }
+.columns p { margin-top:10px; font-size:15px; line-height:1.55; color:var(--muted); }
 .columns code { font-family:var(--mono); font-size:.88em; }
 .columns pre code { font-size:inherit; }
 
@@ -37,7 +37,7 @@
 @media (max-width:1100px) {
   .columns { grid-template-columns:1fr; }
   .columns > div, .columns > div:first-child, .columns > div:last-child { padding:26px 0 8px; }
-  .columns > div + div { border-left:0; border-top:1px solid rgba(245,242,236,.2); }
+  .columns > div + div { border-left:0; border-top:1px solid var(--border); }
 }
 
 @media (max-width:900px) {

@@ -1,16 +1,16 @@
-.nav { height:64px; padding:0 2.4vw 0 8vw; display:flex; align-items:center; border-bottom:1px solid var(--line); position:relative; z-index:50; background:var(--paper); color:var(--ink); font-family:var(--sans); }
-.brand { display:flex; align-items:center; gap:9px; font-size:17px; font-weight:600; letter-spacing:-.02em; }
-.starMark { width:22px; height:22px; }
+.nav { height:64px; padding:0 2.4vw 0 8vw; display:flex; align-items:center; border-bottom:1px dashed var(--line); position:relative; z-index:50; background:var(--paper); color:var(--ink); font-family:var(--sans); }
+.brand { display:flex; align-items:center; gap:9px; font-size:17px; font-weight:600; letter-spacing:0; }
+.starMark { width:22px; height:22px; color:var(--accent); filter:drop-shadow(0 0 6px var(--accent-dim)); }
 
 .tabs { display:flex; align-items:center; gap:4px; margin-left:auto; margin-right:20px; list-style:none; font-size:14px; }
 .tab { display:flex; align-items:center; gap:5px; padding:8px 12px; border:0; background:none; color:inherit; font:inherit; cursor:pointer; transition:background .15s; }
 .tab:hover, .tabOpen { background:var(--hover); }
-.tab:focus-visible, .item:focus-visible, .cta:focus-visible, .ctaSecondary:focus-visible, .mobileCta:focus-visible, .menuButton:focus-visible, .mobileTab:focus-visible, .themeToggle:focus-visible { outline:2px solid #8bb512; outline-offset:2px; }
+.tab:focus-visible, .item:focus-visible, .cta:focus-visible, .ctaSecondary:focus-visible, .mobileCta:focus-visible, .menuButton:focus-visible, .mobileTab:focus-visible, .themeToggle:focus-visible { outline:1px dashed var(--accent); outline-offset:2px; }
 .active { font-weight:600; }
 .chevron { font-size:9px; opacity:.5; transition:transform .2s; }
 .tabOpen .chevron { transform:rotate(180deg); }
 
-.panel { position:absolute; top:100%; left:0; right:0; background:var(--paper); border-bottom:1px solid var(--line); box-shadow:0 24px 40px -32px rgba(16,43,49,.3); animation:drop .16s ease-out; }
+.panel { position:absolute; top:100%; left:0; right:0; background:var(--surface); border-bottom:1px dashed var(--line); box-shadow:0 24px 40px -32px var(--shadow); animation:drop .16s ease-out; }
 .panel[hidden] { display:none; }
 .panelInner { padding:28px 8vw 32px; display:grid; grid-template-columns:200px 1fr; gap:40px; }
 .panelLabel { font-family:var(--mono); text-transform:uppercase; letter-spacing:.06em; font-size:11px; color:var(--accent); padding-top:12px; }
@@ -19,7 +19,7 @@
 .item:hover { background:var(--item-hover); }
 .item[aria-disabled="true"] { cursor:default; opacity:.7; }
 .item[aria-disabled="true"]:hover { background:none; }
-.itemTitle { font-size:15px; font-weight:500; letter-spacing:-.01em; display:flex; align-items:center; gap:4px; }
+.itemTitle { font-size:15px; font-weight:500; letter-spacing:0; display:flex; align-items:center; gap:4px; }
 .itemText { font-size:13px; color:var(--muted); line-height:1.4; }
 .soon { margin-left:6px; padding:1px 5px; border:1px solid currentColor; color:var(--accent); font-family:var(--mono); font-size:9px; font-weight:500; text-transform:uppercase; letter-spacing:.08em; }
 
@@ -70,7 +70,7 @@
   .mobile { display:flex; flex-direction:column; position:fixed; top:60px; left:0; right:0; bottom:0; padding:12px 6vw 40px; background:var(--paper); overflow-y:auto; }
   .mobile[hidden] { display:none; }
   .mobileSection { border-bottom:1px solid var(--line); }
-  .mobileTab { width:100%; display:flex; justify-content:space-between; align-items:center; padding:20px 0; border:0; background:none; color:inherit; font:inherit; font-size:20px; font-weight:500; letter-spacing:-.02em; cursor:pointer; text-align:left; }
+  .mobileTab { width:100%; display:flex; justify-content:space-between; align-items:center; padding:20px 0; border:0; background:none; color:inherit; font:inherit; font-size:20px; font-weight:500; letter-spacing:0; cursor:pointer; text-align:left; }
   a.mobileTab { justify-content:flex-start; gap:6px; border-bottom:1px solid var(--line); }
   .mobileItems { display:flex; flex-direction:column; padding-bottom:16px; }
   .mobileItems .item { padding:10px 0; }

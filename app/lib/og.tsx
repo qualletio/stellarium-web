@@ -2,9 +2,10 @@ import { ImageResponse } from "next/og";
 
 export const ogSize = { width: 1200, height: 630 };
 
-const ink = "#102b31";
-const paper = "#f5f2ec";
-const lime = "#d6f36a";
+// Dark terminal palette from globals.css.
+const ink = "#e8f0e4";
+const paper = "#0a0d0b";
+const lime = "#3ef08a";
 
 function StarMark({ size, color }: { size: number; color: string }) {
   return (
@@ -22,16 +23,16 @@ export function renderOgImage({ kicker, title }: { kicker: string; title: string
     (
       <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "72px 80px", background: paper, color: ink }}>
         <div style={{ display: "flex", alignItems: "center", gap: 18, fontSize: 34, fontWeight: 600 }}>
-          <StarMark size={44} color={ink} />
+          <StarMark size={44} color={lime} />
           stellarium
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 24, letterSpacing: 3, textTransform: "uppercase", color: "#657e32", marginBottom: 24 }}>{kicker}</div>
-          <div style={{ fontSize: 80, lineHeight: 1, letterSpacing: -3, fontWeight: 600, maxWidth: 900 }}>{title}</div>
+          <div style={{ fontSize: 24, letterSpacing: 3, textTransform: "uppercase", color: lime, marginBottom: 24 }}>{kicker}</div>
+          <div style={{ fontSize: 80, lineHeight: 1, letterSpacing: -1, fontWeight: 600, maxWidth: 900 }}>{title}</div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 26, color: "#456167" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 26, color: "#6c7b69" }}>
           stellarium.sh
-          <div style={{ display: "flex", width: 72, height: 72, borderRadius: 36, background: ink, alignItems: "center", justifyContent: "center" }}>
+          <div style={{ display: "flex", width: 72, height: 72, borderRadius: 36, background: "#141b16", border: "1px solid #1f2a23", alignItems: "center", justifyContent: "center" }}>
             <StarMark size={40} color={lime} />
           </div>
         </div>
