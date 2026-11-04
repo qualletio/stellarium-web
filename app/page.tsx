@@ -81,6 +81,21 @@ const eventPatterns = [
   { title: "Private workflows", text: "Mark an event type restricted, and only contracts your own organization deployed receive it." },
 ];
 
+const shipStruct = `// com.example declares the shape once, on one of its nodes.
+struct com.example.Address@1(street: string, city: string, postcode: string)
+
+// Anyone, on any node, can then use it as a type.
+contract com.acme.Ship(to: com.example.Address@1): string {
+  const carrier: com.acme.Carrier
+  return carrier.label(city: to.city, postcode: to.postcode)
+}`;
+
+const structPatterns = [
+  { title: "Shared vocabularies", text: "Declare an Address, an Invoice or a Forecast once, and every organization's contracts, events and resources can speak it." },
+  { title: "Typed events", text: "Give event type fields struct types, so every consumer on every node gets the shape it expects." },
+  { title: "Safe upgrades", text: "Versions are immutable and never deleted. Declare @2 for a new shape, and nothing that names @1 changes." },
+];
+
 const features = [
   { title: "Self-hosted", text: "A node runs inside your own Fastify app. Resource functions execute in your process, and their code never leaves your server." },
   { title: "Called by name", text: "Programs refer to resources by full name, like com.example.Weather. Your node works out which peer hosts each one and forwards the call." },
@@ -96,6 +111,7 @@ const linkGroups: { title: string; rows: LinkRow[] }[] = [
       { label: "Run a node", href: "/build" },
       { label: "Deploy a contract", href: "/build/contracts" },
       { label: "React to events", href: "/build/events" },
+      { label: "Share types with structs", href: "/build/structs" },
       { label: "HTTP API reference", href: "/build#http-api" },
       { label: "Stellarium Explorer", href: "/build/explorer" },
     ],
@@ -203,6 +219,19 @@ export default function Home() {
         </div>
         <div className={styles.features}>
           {eventPatterns.map((pattern) => <article key={pattern.title}><h3>{pattern.title}</h3><p>{pattern.text}</p></article>)}
+        </div>
+      </section>
+
+      <section className={content.section} id="structs">
+        <div className={content.sectionHead}><p className={content.kicker}>Structs</p><h2>A Universal Type-System for the Internet</h2></div>
+        <div className={content.body}>
+          <p>A <strong>struct</strong> names the shape of an object: its fields and the type of each. An organization declares it once, and anyone on the network can use it as a type in contracts, event types and resource functions, so values are checked wherever they&apos;re passed, returned or emitted, instead of travelling as an unchecked <code>object</code>.</p>
+          <CodeBlock label="Ship.req" code={shipStruct} />
+          <p>Every reference names a version, and versions never change or go away, so <code>com.example.Address@1</code> means the same fields on every node, forever. Nodes learn structs from their peers through signed announcements, and only the organization that owns a path can declare it. Checking is structural, so any value with the right fields fits.</p>
+          <p><Link href="/build/structs">How structs work →</Link></p>
+        </div>
+        <div className={styles.features}>
+          {structPatterns.map((pattern) => <article key={pattern.title}><h3>{pattern.title}</h3><p>{pattern.text}</p></article>)}
         </div>
       </section>
 

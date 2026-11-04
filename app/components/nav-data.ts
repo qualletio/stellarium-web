@@ -42,7 +42,7 @@ export const navSections: NavSection[] = [
   },
   {
     label: "Build",
-    paths: ["/build", "/build/explorer", "/build/contracts", "/build/events"],
+    paths: ["/build", "/build/explorer", "/build/contracts", "/build/events", "/build/structs"],
     items: [
       { title: "Run a node", description: "Install, configure, and start a node", href: "/build" },
       { title: "Prerequisites", description: "Node.js, Fastify, and RequestScript", href: "/build#prerequisites" },
@@ -51,6 +51,7 @@ export const navSections: NavSection[] = [
       { title: "HTTP API", description: "The /v1 routes every node exposes", href: "/build#http-api" },
       { title: "Contracts", description: "Deploy RequestScript resources to any node", href: "/build/contracts" },
       { title: "Events", description: "Let contracts react to each other", href: "/build/events" },
+      { title: "Structs", description: "Shared, versioned types for the whole network", href: "/build/structs" },
       { title: "Stellarium Explorer", description: "A desktop app for writing and running requests", href: "/build/explorer" },
     ],
   },
