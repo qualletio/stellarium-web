@@ -109,6 +109,12 @@ export default function AiPage() {
             <div className={styles.cardLinks}><Link href="/ai/inference-functions">Read the guide</Link></div>
           </article>
           <article className={styles.card}>
+            <span>AI</span>
+            <h3>Autonomous agents</h3>
+            <p>How agents run requests and deploy their own contracts, events and structs.</p>
+            <div className={styles.cardLinks}><Link href="/ai/autonomous-agents">Read the guide</Link></div>
+          </article>
+          <article className={styles.card}>
             <span>Build</span>
             <h3>Run a node</h3>
             <p>Set up the node that hosts your model, from an empty folder to a running server.</p>
