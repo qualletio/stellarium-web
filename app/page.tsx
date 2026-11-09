@@ -141,7 +141,7 @@ export default function Home() {
       <section className={`${content.hero} ${styles.hero}`} id="top">
         <div>
           <p className={content.kicker}>Open source · Peer-to-peer</p>
-          <h1>The API Network for Humans and Agents</h1>
+          <h1>The World Computer for Humans and Agents</h1>
           <p className={content.lead}>Stellarium is an open, programmable API marketplace where anyone can host an API and get paid for it.</p>
           <div className={content.actions}>
             <a className={content.button} href={links.registry} target="_blank" rel="noreferrer">Explore <span aria-hidden="true">↗</span></a>
