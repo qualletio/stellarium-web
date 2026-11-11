@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CodeBlock from "./components/CodeBlock";
+import RotatingText from "./components/RotatingText";
 import SiteFooter from "./components/SiteFooter";
 import SiteNav from "./components/SiteNav";
 import { links } from "./components/nav-data";
@@ -14,7 +15,9 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-const install = "npm install stellarium-ts fastify requestscript";
+const heroWords = ["World Computer", "API Network", "API Repository", "Programmable Network"];
+
+const install ="npm install stellarium-ts fastify requestscript";
 
 const resource = `await node.register({
   metadata: {},
@@ -141,7 +144,7 @@ export default function Home() {
       <section className={`${content.hero} ${styles.hero}`} id="top">
         <div>
           <p className={content.kicker}>Open source · Peer-to-peer</p>
-          <h1>The World Computer for Humans and Agents</h1>
+          <h1>The <RotatingText words={heroWords} /> for Humans and Agents</h1>
           <p className={content.lead}>Stellarium is an open, programmable API marketplace where anyone can host an API and get paid for it.</p>
           <div className={content.actions}>
             <a className={content.button} href={links.registry} target="_blank" rel="noreferrer">Explore <span aria-hidden="true">↗</span></a>

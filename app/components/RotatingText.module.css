@@ -1,0 +1,19 @@
+.word {
+  display: inline-block;
+  animation-name: cycle;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+}
+
+@keyframes cycle {
+  0% { opacity: 0; transform: translateY(0.15em); }
+  12% { opacity: 1; transform: none; }
+  88% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-0.15em); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word {
+    animation: none;
+  }
+}
