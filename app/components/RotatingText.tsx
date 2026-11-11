@@ -9,7 +9,7 @@ type Props = {
   interval?: number;
 };
 
-export default function RotatingText({ words, interval = 3500 }: Props) {
+export default function RotatingText({ words, interval = 4500 }: Props) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {

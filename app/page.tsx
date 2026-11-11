@@ -15,9 +15,9 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-const heroWords = ["World Computer", "API Network", "API Repository", "Programmable Network"];
+const heroWords = ["World Computer", "API Repository", "Programmable Network"];
 
-const install ="npm install stellarium-ts fastify requestscript";
+const install = "npm install stellarium-ts fastify requestscript";
 
 const resource = `await node.register({
   metadata: {},
