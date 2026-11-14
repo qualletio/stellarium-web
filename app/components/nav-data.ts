@@ -50,6 +50,7 @@ export const navSections: NavSection[] = [
       { title: "Join a network", description: "Bootstrap from a peer and sync resources", href: "/build#join" },
       { title: "HTTP API", description: "The /v1 routes every node exposes", href: "/build#http-api" },
       { title: "Contracts", description: "Deploy RequestScript resources to any node", href: "/build/contracts" },
+      { title: "Payable contracts", description: "Conditional payouts written as code", href: "/build/contracts#payable" },
       { title: "Events", description: "Let contracts react to each other", href: "/build/events" },
       { title: "Structs", description: "Shared, versioned types for the whole network", href: "/build/structs" },
       { title: "Stellarium Explorer", description: "A desktop app for writing and running requests", href: "/build/explorer" },

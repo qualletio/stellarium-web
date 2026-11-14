@@ -15,7 +15,7 @@ export const metadata = pageMetadata({
   path: "/",
 });
 
-const heroWords = ["World Computer", "API Repository", "Programmable Money", "Store of Value"];
+const heroWords = ["World Computer", "API Repository", "Programmable Money", "Payout Engine"];
 
 const install = "npm install stellarium-ts fastify requestscript";
 
@@ -70,6 +70,20 @@ const appPatterns = [
   { title: "Agent memory", text: "Give an agent a contract that remembers what it learned between runs, behind rules anyone can read in the contract's published source." },
 ];
 
+const splitBlurb = `payable contract com.example.Split: int64 {
+  const account: sh.stellarium.money.Account
+  const author = payment.amount * 70 / 100
+  account.pay(to: "org_author", amount: author, from: payment.from, key: null)
+  account.pay(to: "org_data", amount: payment.amount - author, from: payment.from, key: null)
+  return payment.amount
+}`;
+
+const payablePatterns = [
+  { title: "Payment on delivery", text: "A buyer funds a job, and the provider is paid when the buyer or an arbiter confirms delivery. Cancel it, and the money goes back to the buyer." },
+  { title: "Revenue splits", text: "Pay the author, the data provider and the model in one call, in the shares the code says. Every payment goes through, or none does." },
+  { title: "Milestones", text: "Release a project in stages as each one is confirmed. Anything not paid out within the time limit goes back to the buyer automatically." },
+];
+
 const onOrder = `// com.example declares: event com.example.OrderPlaced(orderId: string, total: decimal)
 // and its Checkout contract emits one with each order.
 
@@ -113,6 +127,7 @@ const linkGroups: { title: string; rows: LinkRow[] }[] = [
     rows: [
       { label: "Run a node", href: "/build" },
       { label: "Deploy a contract", href: "/build/contracts" },
+      { label: "Accept payments in a contract", href: "/build/contracts#payable" },
       { label: "React to events", href: "/build/events" },
       { label: "Share types with structs", href: "/build/structs" },
       { label: "HTTP API reference", href: "/build#http-api" },
@@ -209,6 +224,19 @@ export default function Home() {
         </div>
         <div className={styles.features}>
           {appPatterns.map((pattern) => <article key={pattern.title}><h3>{pattern.title}</h3><p>{pattern.text}</p></article>)}
+        </div>
+      </section>
+
+      <section className={`${content.section} ${content.dark}`} id="payable-contracts">
+        <div className={content.sectionHead}><p className={content.kicker}>Payable contracts</p><h2>Conditional payouts, written as code</h2></div>
+        <div className={content.body}>
+          <p>A <strong>payable contract</strong> accepts real dollars with a call and pays them out when its conditions are met. Hire a courier and pay on delivery, split revenue between everyone who built an answer, or release a project milestone by milestone. The rules are public source code that anyone can read before they pay.</p>
+          <CodeBlock label="Split.req" code={splitBlurb} />
+          <p>Whoever sends the money names who it may be paid to, so even a buggy contract can only pay those organizations or give the money back. Money and state commit together, only when the whole run succeeds, and Stellarium replays each run before money moves, so the node hosting a contract can&apos;t move its money by misreporting what it did. Payees are paid out through Stripe Connect.</p>
+          <p><Link href="/build/contracts#payable">How payable contracts work →</Link></p>
+        </div>
+        <div className={styles.features}>
+          {payablePatterns.map((pattern) => <article key={pattern.title}><h3>{pattern.title}</h3><p>{pattern.text}</p></article>)}
         </div>
       </section>
 
