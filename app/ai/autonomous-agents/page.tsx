@@ -60,24 +60,27 @@ const struct = `struct com.example.Digest@1(topic: string, summary: string)`;
 
 const event = `event com.example.DigestReady@1(digest: com.example.Digest@1)`;
 
-const contract = `contract com.example.Summarize@1(topic: string, text: string): com.example.Digest@1 {
+const contract = `contract com.example.Summarize@1 {
   const sonnet: sh.stellarium.inference.claude.Sonnet
 
-  const reply = sonnet.message(prompt: "Summarize in one line: \${text}", maxTokens: 400)
-  if (reply.error != null) {
-    var failed: com.example.Digest@1 = { topic: topic, summary: "unavailable" }
-    return failed
-  }
+  pub fn summarize(topic: string, text: string): com.example.Digest@1 {
+    const reply = sonnet.message(prompt: "Summarize in one line: \${text}", maxTokens: 400)
+    if (reply.error != null) {
+      var failed: com.example.Digest@1 = { topic: topic, summary: "unavailable" }
+      return failed
+    }
 
-  var digest: com.example.Digest@1 = { topic: topic, summary: reply.value }
-  emit com.example.DigestReady(digest: digest)
-  return digest
+    var digest: com.example.Digest@1 = { topic: topic, summary: reply.value }
+    emit com.example.DigestReady(digest: digest)
+    return digest
+  }
 }`;
 
 const eventContract = `contract com.example.OnDigestReady@1 consumes com.example.DigestReady@1 {
-  var state(digest.topic) latest: string = ""
-
-  latest = digest.summary
+  fn on(digest: com.example.Digest@1) {
+    var state(digest.topic) latest: string = ""
+    latest = digest.summary
+  }
 }`;
 
 const deploy = `npm install -g stellarium-cli
@@ -99,7 +102,7 @@ summary: 4 deployed, 0 unchanged`;
 const call = `request SummarizeStandup {
   const summarize: com.example.Summarize
 
-  return summarize.run(topic: "standup", text: "Shipped the fix. Docs are next.")
+  return summarize.summarize(topic: "standup", text: "Shipped the fix. Docs are next.")
 }`;
 
 const readState = `curl "$STELLARIUM_NODE_URL/v1/contracts/com.example.OnDigestReady/state" \\
@@ -208,7 +211,7 @@ export default function AutonomousAgentsPage() {
       <section className={styles.section} id="call">
         <div className={styles.sectionHead}><p className={styles.kicker}>05</p><h2>Call and react</h2></div>
         <div className={styles.body}>
-          <p>A contract is a resource like any other. Once it&apos;s deployed, the agent, or any other program on the network, binds it by name and calls <code>run</code>:</p>
+          <p>A contract is a resource like any other. Once it&apos;s deployed, the agent, or any other program on the network, binds it by name and calls one of its functions, here <code>summarize</code>:</p>
           <CodeBlock label="SummarizeStandup.req" code={call} />
           <p>When <code>Summarize</code> succeeds, it emits <code>DigestReady</code>. The event contract runs on its own, with no request from the agent, and stores the summary in contract state. State is private, so the agent reads it with its client:</p>
           <CodeBlock label="Terminal" code={readState} />

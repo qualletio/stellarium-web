@@ -39,9 +39,11 @@ const declare = `curl -X POST https://node.example/v1/structs \\
   -H "Authorization: Bearer $API_KEY" \\
   -d '{"source": "struct com.example.Address@1(street: string, city: string, postcode: string)"}'`;
 
-const use = `contract com.example.Ship(customer: com.example.Customer@2): com.example.Address@1 {
-  var first: com.example.Address@1 = customer.addresses[0]
-  return first
+const use = `contract com.example.Ship {
+  pub fn ship(customer: com.example.Customer@2): com.example.Address@1 {
+    var first: com.example.Address@1 = customer.addresses[0]
+    return first
+  }
 }
 
 event com.example.OrderShipped(to: com.example.Address@1)`;
@@ -119,7 +121,7 @@ export default function StructsPage() {
       <section className={styles.section} id="use">
         <div className={styles.sectionHead}><p className={styles.kicker}>03</p><h2>Use structs as types</h2></div>
         <div className={styles.body}>
-          <p>A struct type is the struct&apos;s qualified name and its version. It can appear wherever a type can: contract parameters and return types, <code>var</code> annotations including state variables, event type fields, and resource function types declared in TypeScript.</p>
+          <p>A struct type is the struct&apos;s qualified name and its version. It can appear wherever a type can: contract functions&apos; parameters and return types, <code>var</code> annotations including state variables, event type fields, and resource function types declared in TypeScript.</p>
           <CodeBlock label="Ship.req" code={use} />
           <p>A struct value is written as an object literal, and checked when it&apos;s assigned, passed or returned:</p>
           <CodeBlock label="Ship.req" code={literal} />

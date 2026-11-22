@@ -26,25 +26,32 @@ const article = {
 
 const readme = `${links.github}#contracts`;
 
-const contract = `contract com.example.Outlook(city: string): string {
+const contract = `contract com.example.Outlook {
   const weather: com.example.Weather
-  const today = weather.temperature(city: city)
-  if (today.error != null) {
-    return "unknown"
+
+  fn describe(degrees: int32): string {
+    return "\${degrees} degrees"
   }
-  return "\${today.value} degrees"
+
+  pub fn today(city: string): string {
+    const today = weather.temperature(city: city)
+    if (today.error != null) {
+      return "unknown"
+    }
+    return describe(degrees: today.value)
+  }
 }`;
 
 const deploy = `curl -X POST https://node.example/v1/contracts \\
   -H 'Content-Type: application/json' \\
   -H "Authorization: Bearer $RUN_TOKEN" \\
-  -d '{"source": "contract com.example.Outlook(city: string): string { ... }", "description": "Today in words"}'`;
+  -d '{"source": "contract com.example.Outlook { ... }", "description": "Today in words"}'`;
 
 const deployResponse = `{ "path": "com.example", "name": "Outlook", "version": "1", "feeMicroUsd": 1000 }`;
 
 const script = `request Today {
   const outlook: com.example.Outlook
-  return outlook.run(city: "Oslo")
+  return outlook.today(city: "Oslo")
 }`;
 
 const scriptResponse = `{ "returnValue": { "value": "12 degrees", "error": null }, "usage": { "tokens": 17 } }`;
@@ -58,43 +65,43 @@ const callerEnv = `# The most one call to a contract on another node may cost, w
 # paid calls the contract makes, in micro-USD. Defaults to COST_LIMIT_MICRO_USD.
 CONTRACT_COST_LIMIT_MICRO_USD=50000`;
 
-const stateExample = `contract com.example.Visits(page: string): int32 {
+const stateExample = `contract com.example.Visits {
   var state total: int32 = 0
   var state(caller.org) mine: int32 = 0
 
-  total = total + 1
-  mine = mine + 1
-  return mine
+  pub fn visit(): int32 {
+    total = total + 1
+    mine = mine + 1
+    return mine
+  }
+
+  pub fn count(): int32 {
+    return total
+  }
 }`;
 
-const tip = `payable contract com.example.Tip(note: string): int64 {
-  return payment.amount
+const tip = `contract com.example.Tip {
+  pub payable fn tip(note: string): int64 {
+    return payment.amount
+  }
+
+  pub fn thanks(): string {
+    return "Thank you!"
+  }
 }`;
 
 const hire = `request Hire {
   const job: com.example.Job@1
-  return job.run{amount: 20000000, payees: ["org_courier"]}(
-    action: "fund", jobId: "", provider: "org_courier", arbiter: "org_arbiter"
+  return job.fund{amount: 20000000, payees: ["org_courier"]}(
+    provider: "org_courier", arbiter: "org_arbiter"
   ).value
 }`;
 
-const job = `payable contract com.example.Job(action: string, jobId: string, provider: string, arbiter: string): string {
+const job = `contract com.example.Job {
   const account: sh.stellarium.money.Account
   const uuid: sh.stellarium.stdlib.Uuid
 
-  var id: string = jobId
-  if (action == "fund") {
-    const created = uuid.new()
-    if (created.error != null) {
-      fail "couldn't create a job id"
-    }
-    id = created.value
-  }
-  var state(id) payer: string = null
-  var state(id) payee: string = null
-  var state(id) judge: string = null
-
-  if (action == "fund") {
+  pub payable fn fund(provider: string, arbiter: string): string {
     if (payment.amount == 0) {
       fail "fund needs money attached"
     }
@@ -104,51 +111,89 @@ const job = `payable contract com.example.Job(action: string, jobId: string, pro
     if (account.canReceive(org: provider).value == false) {
       fail "the provider can't receive payouts"
     }
+    const created = uuid.new()
+    if (created.error != null) {
+      fail "couldn't create a job id"
+    }
+    const id = created.value
+    var state(id) payer: string = null
+    var state(id) payee: string = null
+    var state(id) judge: string = null
     account.earmark(key: id)
     payer = payment.from
     payee = provider
     judge = arbiter
     return id
   }
-  if (payer == null) {
-    fail "no such job"
+
+  pub fn release(jobId: string): string {
+    var state(jobId) payer: string = null
+    var state(jobId) payee: string = null
+    var state(jobId) judge: string = null
+    if (payer == null) {
+      fail "no such job"
+    }
+    if (sender.org != payer && sender.org != judge) {
+      fail "not allowed"
+    }
+    const due = remaining(payer: payer, jobId: jobId)
+    if (due > 0) {
+      account.pay(to: payee, amount: due, from: payer, key: jobId)
+    }
+    return jobId
+  }
+
+  pub fn cancel(jobId: string): string {
+    var state(jobId) payer: string = null
+    var state(jobId) payee: string = null
+    var state(jobId) judge: string = null
+    if (payer == null) {
+      fail "no such job"
+    }
+    if (sender.org != payee && sender.org != judge) {
+      fail "not allowed"
+    }
+    const due = remaining(payer: payer, jobId: jobId)
+    if (due > 0) {
+      account.refund(to: payer, amount: due, key: jobId)
+    }
+    return jobId
   }
 
   // This job's money, after anything the time limit already returned.
-  const due = account.fundingOf(org: payer, key: id).value
-
-  if (action == "release" && (sender.org == payer || sender.org == judge)) {
-    if (due > 0) {
-      account.pay(to: payee, amount: due, from: payer, key: id)
-    }
-    return id
+  fn remaining(payer: string, jobId: string): int64 {
+    return account.fundingOf(org: payer, key: jobId).value
   }
-  if (action == "cancel" && (sender.org == payee || sender.org == judge)) {
-    if (due > 0) {
-      account.refund(to: payer, amount: due, key: id)
-    }
-    return id
-  }
-  fail "not allowed"
 }`;
 
-const split = `payable contract com.example.Split: int64 {
+const split = `contract com.example.Split {
   const account: sh.stellarium.money.Account
-  const author = payment.amount * 70 / 100
-  account.pay(to: "org_author", amount: author, from: payment.from, key: null)
-  account.pay(to: "org_data", amount: payment.amount - author, from: payment.from, key: null)
-  return payment.amount
+
+  pub payable fn split(): int64 {
+    const author = payment.amount * 70 / 100
+    account.pay(to: "org_author", amount: author, from: payment.from, key: null)
+    account.pay(to: "org_data", amount: payment.amount - author, from: payment.from, key: null)
+    return payment.amount
+  }
 }`;
 
-const raffle = `payable contract com.example.Raffle(action: string, round: string): string {
+const raffle = `contract com.example.Raffle {
   const random: sh.stellarium.random.Random
-  if (action == "draw") {
+
+  pub payable fn enter(round: string): string {
+    return "entered \${round}"
+  }
+
+  pub fn draw(round: string): string {
     // The value is drawn only after this run's money settles.
     random.requestValue(key: round)
     return "requested"
   }
-  // Fails until the value exists.
-  return random.value(key: round).value
+
+  pub fn winner(round: string): string {
+    // Fails until the value exists.
+    return random.value(key: round).value
+  }
 }`;
 
 export default function ContractsPage() {
@@ -169,11 +214,11 @@ export default function ContractsPage() {
           </div>
         </div>
         <Spec label="Contract summary" items={[
-          ["Language", "RequestScript 1.4+, 1.8+ for payable"],
+          ["Language", "RequestScript 2.0+"],
           ["Deploy", <code key="d">POST /v1/contracts</code>],
-          ["Function", <code key="f">run</code>],
+          ["Functions", <code key="f">pub fn</code>],
           ["Price", "The node's price per million tokens"],
-          ["Money", <code key="m">payable contract</code>],
+          ["Money", <code key="m">pub payable fn</code>],
         ]} />
       </section>
 
@@ -187,7 +232,7 @@ export default function ContractsPage() {
               <tbody>
                 <tr><td>Written in</td><td>TypeScript</td><td>RequestScript</td></tr>
                 <tr><td>Added by</td><td>the node&apos;s owner, at startup</td><td>anyone with a run token, at any time</td></tr>
-                <tr><td>Functions</td><td>any you declare</td><td>one, <code>run</code>, taking the contract&apos;s parameters</td></tr>
+                <tr><td>Functions</td><td>any you declare</td><td>its <code>pub fn</code>s, each taking its own parameters</td></tr>
                 <tr><td>Price</td><td>per call, per token, or free</td><td>the tokens it runs, at the node&apos;s price</td></tr>
                 <tr><td>Code</td><td>stays private on the node</td><td>public: anyone can read what a call does</td></tr>
               </tbody>
@@ -203,10 +248,11 @@ export default function ContractsPage() {
           <p>A contract is a RequestScript <code>contract</code> with two requirements:</p>
           <ul>
             <li><strong>A path</strong>, such as <code>com.example</code>, so its full name is unique on the network.</li>
-            <li><strong>A return type</strong> after its parameters. The value it returns is checked against it, and callers see it in the resource listing.</li>
+            <li><strong>At least one <code>pub fn</code>.</strong> Each is a function callers call, with its own parameters and return type, which callers see in the resource listing. A function without a return type returns nothing.</li>
           </ul>
+          <p>Functions without <code>pub</code> are private helpers that only the contract calls, by name. State variables and resource bindings declared outside the functions belong to the whole contract, so every function shares them.</p>
           <CodeBlock label="Outlook.req" code={contract} />
-          <p>This contract calls the paid <code>com.example.Weather</code> resource and turns its answer into words. Like any script, it checks <code>error</code> on a call&apos;s result, so a failed call doesn&apos;t fail the contract.</p>
+          <p>This contract calls the paid <code>com.example.Weather</code> resource and turns its answer into words with a private helper. Like any script, it checks <code>error</code> on a call&apos;s result, so a failed call doesn&apos;t fail the contract. A private function&apos;s value comes back directly, and a function can&apos;t call itself, so every run stays bounded.</p>
         </div>
       </section>
 
@@ -229,7 +275,7 @@ export default function ContractsPage() {
       <section className={styles.section} id="call">
         <div className={styles.sectionHead}><p className={styles.kicker}>04</p><h2>Call it</h2></div>
         <div className={styles.body}>
-          <p>A script binds a contract like any resource and calls its <code>run</code> function:</p>
+          <p>A script binds a contract like any resource and calls one of its functions by name:</p>
           <CodeBlock label="Today.req" code={script} />
           <CodeBlock label="Response" code={scriptResponse} />
           <p>Contracts can call other contracts, up to 8 deep, so a loop between them stops. A contract that fails, for example by dividing by zero, comes back as the call&apos;s <code>error</code>.</p>
@@ -259,7 +305,7 @@ export default function ContractsPage() {
         <div className={styles.sectionHead}><p className={styles.kicker}>06</p><h2>Versions and ownership</h2></div>
         <div className={styles.body}>
           <ul>
-            <li><strong>Versions are immutable.</strong> To change a contract, deploy it again with a new version, such as <code>contract com.example.Outlook@2(...)</code>. Deploying a version that exists is refused.</li>
+            <li><strong>Versions are immutable.</strong> To change a contract, deploy it again with a new version, such as <code>contract com.example.Outlook@2 {"{"} ... {"}"}</code>. Deploying a version that exists is refused.</li>
             <li><strong>Calls run the latest version.</strong> <code>GET /v1/contracts</code> lists every version with its source, so you can read exactly what a call will do.</li>
             <li><strong>The first organization to deploy a contract owns it.</strong> Only its API clients can add versions or delete it with <code>DELETE /v1/contracts/com.example.Outlook@2</code>. The node&apos;s owner can delete any contract on their node.</li>
           </ul>
@@ -269,7 +315,7 @@ export default function ContractsPage() {
       <section className={styles.section} id="state">
         <div className={styles.sectionHead}><p className={styles.kicker}>07</p><h2>Keep state between calls</h2></div>
         <div className={styles.body}>
-          <p>A contract can keep values between calls in <strong>state variables</strong>, declared with <code>var state</code> at the top of its body. Only the contract&apos;s own code can change them, so the published source is also the policy for its data: a counter, a quota, a cache, or an agent&apos;s memory.</p>
+          <p>A contract can keep values between calls in <strong>state variables</strong>, declared with <code>var state</code> outside its functions, or at the top of a function, where a scope can use the function&apos;s parameters. Every function of the contract shares them. Only the contract&apos;s own code can change them, so the published source is also the policy for its data: a counter, a quota, a cache, or an agent&apos;s memory.</p>
           <CodeBlock label="Visits.req" code={stateExample} />
           <ul>
             <li><strong><code>var state name</code></strong> is one copy shared by every caller. <strong><code>var state(scope) name</code></strong> keeps a copy for each value of <code>scope</code>, any expression that evaluates to a string or a number.</li>
@@ -304,20 +350,20 @@ export default function ContractsPage() {
       <section className={styles.section} id="accept">
         <div className={styles.sectionHead}><p className={styles.kicker}>09</p><h2>Accept money</h2></div>
         <div className={styles.body}>
-          <p>Put <code>payable</code> before <code>contract</code>. The contract reads what a call attached from the built-in <code>payment</code>:</p>
+          <p>Mark the functions that take money <code>pub payable fn</code>. They read what a call attached from the built-in <code>payment</code>. A contract with one is a <strong>payable contract</strong>, and its other functions take no money:</p>
           <CodeBlock label="Tip.req" code={tip} />
           <ul>
             <li><strong><code>payment.amount</code></strong> is the micro-USD attached to this call (1 USD = 1,000,000), or <code>0</code> when nothing was.</li>
             <li><strong><code>payment.from</code></strong> is the organization whose money it is.</li>
             <li><strong><code>payment.payees</code></strong> are the organizations it may be paid to.</li>
           </ul>
-          <p>A caller attaches money in braces between <code>run</code> and its arguments, naming 1 to 16 payees:</p>
+          <p>A caller attaches money in braces between the function&apos;s name and its arguments, naming 1 to 16 payees:</p>
           <CodeBlock label="Hire.req" code={hire} />
           <ul>
             <li><strong>Calls that attach money pin a version</strong>, as in <code>com.example.Job@1</code>, so the buyer pays the code it read, not whatever its owner deploys next.</li>
             <li><strong>Payees are the buyer&apos;s guarantee.</strong> Even a buggy contract can only pay this buyer&apos;s money to the organizations the buyer named, or give it back.</li>
             <li><strong>Sending money is off until you turn it on.</strong> An API client can attach up to its <em>maximum run value</em>, which starts at $0. Raise it on the <a href={links.platform} target="_blank" rel="noreferrer">Stellarium Platform</a>. Attached money counts toward the client&apos;s monthly cap.</li>
-            <li><strong>Attaching money to a contract that isn&apos;t payable is refused</strong> before it runs.</li>
+            <li><strong>Attaching money to a function that isn&apos;t payable is refused</strong> before it runs.</li>
           </ul>
         </div>
       </section>
@@ -348,7 +394,7 @@ export default function ContractsPage() {
             <li><strong><code>fail &quot;reason&quot;</code></strong> fails the run on purpose. A failed <code>fund</code> returns the attached money and saves no state.</li>
             <li><strong>A refused <code>Account</code> call fails the run</strong>, even when the script ignores the error. Nothing is paid because a call failed part-way through.</li>
           </ul>
-          <p>A revenue split pays several organizations from one payment. The buyer names both as payees: <code>split.run{"{"}amount: 1000000, payees: [&quot;org_author&quot;, &quot;org_data&quot;]{"}"}()</code>.</p>
+          <p>A revenue split pays several organizations from one payment. The buyer names both as payees: <code>split.split{"{"}amount: 1000000, payees: [&quot;org_author&quot;, &quot;org_data&quot;]{"}"}()</code>.</p>
           <CodeBlock label="Split.req" code={split} />
           <p>Both payments go through together, or neither does. Integer division truncates, so <code>org_data</code> gets the remainder and nothing is lost to rounding.</p>
         </div>
@@ -390,6 +436,7 @@ export default function ContractsPage() {
           <p>Randomness that decides money, such as a draw or a tiebreak, takes two steps, because a value a run could see right away could be retried until it came out well:</p>
           <CodeBlock label="Raffle.req" code={raffle} />
           <ul>
+            <li><strong>Only <code>enter</code> takes money,</strong> but every function of a payable contract reads <code>now</code> and <code>sender</code>.</li>
             <li><strong><code>requestValue(key)</code></strong> asks for a value. The operator draws it only after this run&apos;s money settles, so by the time anyone knows it, the request can&apos;t be taken back.</li>
             <li><strong><code>value(key)</code></strong> reads it in a later run, and fails until it exists. Each contract can request a key once.</li>
           </ul>

@@ -34,17 +34,21 @@ const declare = `curl -X POST https://node.example/v1/events \\
   -H "Authorization: Bearer $API_KEY" \\
   -d '{"source": "event com.example.OrderPlaced(orderId: string, total: decimal)"}'`;
 
-const emit = `contract com.example.Checkout(orderId: string, total: decimal): string {
-  emit com.example.OrderPlaced(orderId: orderId, total: total)
-  return orderId
+const emit = `contract com.example.Checkout {
+  pub fn checkout(orderId: string, total: decimal): string {
+    emit com.example.OrderPlaced(orderId: orderId, total: total)
+    return orderId
+  }
 }`;
 
 const consume = `contract com.example.OnOrderPlaced consumes com.example.OrderPlaced@1 {
-  var state(orderId) seen: int32 = 0
-  seen = seen + 1
-
   const logger: com.example.Logger
-  logger.info(message: "Order \${orderId}: \${total}, from \${caller.org}")
+
+  fn on(orderId: string, total: decimal) {
+    var state(orderId) seen: int32 = 0
+    seen = seen + 1
+    logger.info(message: "Order \${orderId}: \${total}, from \${caller.org}")
+  }
 }`;
 
 const limitsEnv = `# The most events one run may emit. Defaults to 16.
@@ -114,7 +118,7 @@ export default function EventsPage() {
           <ul>
             <li><strong>Fields are checked.</strong> Each one is converted to its declared type, and a missing or unknown field is a runtime error.</li>
             <li><strong>Events are published only when a run succeeds.</strong> Like contract state, a run that fails publishes nothing.</li>
-            <li><strong>Only the owner emits.</strong> The script must belong to the type&apos;s organization: a run with the node&apos;s API key or one of its API clients, or a contract it owns. Other organizations can still trigger events through your contracts: anyone can call <code>Checkout</code>, and it emits as you.</li>
+            <li><strong>Only the owner emits.</strong> The script must belong to the type&apos;s organization: a run with the node&apos;s API key or one of its API clients, or a contract it owns. Other organizations can still trigger events through your contracts: anyone can call <code>Checkout.checkout</code>, and it emits as you.</li>
             <li><strong>Runs have limits.</strong> A run emits at most 16 events, each with at most 32 KiB of data.</li>
           </ul>
           <CodeBlock label=".env" code={limitsEnv} />
@@ -124,7 +128,7 @@ export default function EventsPage() {
       <section className={styles.section} id="consume">
         <div className={styles.sectionHead}><p className={styles.kicker}>04</p><h2>Consume events</h2></div>
         <div className={styles.body}>
-          <p>An event contract names the type it <code>consumes</code>. The event&apos;s fields are its parameters, so it declares none of its own, and it has no return type.</p>
+          <p>An event contract names the type it <code>consumes</code>. Its handler is <code>fn on</code>, which takes the event&apos;s fields it reads as parameters, each with the field&apos;s type. The handler isn&apos;t <code>pub</code> and returns nothing.</p>
           <CodeBlock label="OnOrderPlaced.req" code={consume} />
           <ul>
             <li><strong>It consumes one version:</strong> the one it names, or the latest its node knows when it&apos;s deployed.</li>
