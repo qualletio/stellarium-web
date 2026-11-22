@@ -48,20 +48,26 @@ const manifest = `paymentManifest: {
   costMicroUsd: 10000, // $0.01 per call
 }`;
 
-const stateful = `contract com.example.Assistant(message: string): string {
+const stateful = `contract com.example.Assistant {
   // One conversation per organization, kept between calls.
   var state(caller.org) history: string = ""
 
   const sonnet: sh.stellarium.inference.claude.Sonnet
 
-  const prompt = "\${history}User: \${message}\\nAssistant:"
-  const reply = sonnet.message(prompt: prompt, maxTokens: 1024)
-  if (reply.error != null) {
-    return reply.error.message
+  pub fn ask(message: string): string {
+    const prompt = "\${history}User: \${message}\\nAssistant:"
+    const reply = sonnet.message(prompt: prompt, maxTokens: 1024)
+    if (reply.error != null) {
+      return reply.error.message
+    }
+
+    history = "\${prompt} \${reply.value}\\n\\n"
+    return reply.value
   }
 
-  history = "\${prompt} \${reply.value}\\n\\n"
-  return reply.value
+  pub fn forget() {
+    history = ""
+  }
 }`;
 
 const appPatterns = [
@@ -70,12 +76,15 @@ const appPatterns = [
   { title: "Agent memory", text: "Give an agent a contract that remembers what it learned between runs, behind rules anyone can read in the contract's published source." },
 ];
 
-const splitBlurb = `payable contract com.example.Split: int64 {
+const splitBlurb = `contract com.example.Split {
   const account: sh.stellarium.money.Account
-  const author = payment.amount * 70 / 100
-  account.pay(to: "org_author", amount: author, from: payment.from, key: null)
-  account.pay(to: "org_data", amount: payment.amount - author, from: payment.from, key: null)
-  return payment.amount
+
+  pub payable fn split(): int64 {
+    const author = payment.amount * 70 / 100
+    account.pay(to: "org_author", amount: author, from: payment.from, key: null)
+    account.pay(to: "org_data", amount: payment.amount - author, from: payment.from, key: null)
+    return payment.amount
+  }
 }`;
 
 const payablePatterns = [
@@ -89,7 +98,10 @@ const onOrder = `// com.example declares: event com.example.OrderPlaced(orderId:
 
 contract com.example.OnOrderPlaced consumes com.example.OrderPlaced {
   const receipts: com.example.Receipts
-  receipts.send(orderId: orderId, total: total)
+
+  fn on(orderId: string, total: decimal) {
+    receipts.send(orderId: orderId, total: total)
+  }
 }`;
 
 const eventPatterns = [
